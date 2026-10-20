@@ -27,7 +27,7 @@
             </div>
 
             {{-- form đăng nhập --}}
-            <form action="{{ route('showLoginForm') }}" method="POST" class="space-y-5">
+            <form action="{{ route('login.submit') }}" method="POST" class="space-y-5">
                 @csrf
 
                 {{-- MSSV --}}
@@ -67,7 +67,7 @@
 
                 <!-- Quên mật khẩu -->
                 <div class="flex items-center justify-end">
-                    <a href="{{ route('showForgotPasswordForm') }}"
+                    <a href="{{ route('password.forgot') }}"
                         class="text-xs font-medium cursor-pointer text-teal-800 hover:text-teal-700 hover:underline transition">
                         Quên mật khẩu?
                     </a>

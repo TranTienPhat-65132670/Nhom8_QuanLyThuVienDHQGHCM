@@ -29,7 +29,7 @@
             </div>
 
             {{-- Form Đặt Lại Mật Khẩu --}}
-            <form action="{{ route('reset-password') }}" method="POST" class="space-y-5">
+            <form action="{{ route('password.update') }}" method="POST" class="space-y-5">
                 @csrf
 
                 <p class="text-sm text-slate-600 text-center mb-4">
@@ -80,7 +80,7 @@
 
             {{-- Quay lại đăng nhập --}}
             <div class="text-center mt-6">
-                <a href="{{ route('cancel-reset') }}"
+                <a href="{{ route('auth.cancel-reset') }}"
                     class="text-xs font-semibold text-teal-800 hover:text-teal-700 hover:underline transition inline-flex items-center gap-1.5">
                     <i class="fa-solid fa-arrow-left"></i> Quay lại đăng nhập
                 </a>

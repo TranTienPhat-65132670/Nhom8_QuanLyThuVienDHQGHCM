@@ -1,9 +1,16 @@
 <?php
 
+use App\Http\Controllers\ClientController;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 require __DIR__ . '/auth.php';
+require __DIR__ . '/admin.php';
+require __DIR__ . '/client.php';
+
+Route::middleware(['role:member'])->group(function () {
+  Route::get('/', [ClientController::class, 'index'])->name('client_index');
+});
 
 Route::get('/test-db', function () {
   try {

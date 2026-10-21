@@ -29,42 +29,38 @@
                 </h4>
                 <ul class="space-y-2.5 text-xs font-medium">
                     <li><a href="#" class="hover:text-teal-400 transition flex items-center gap-1.5"><i
-                                class="fa-solid fa-angle-right text-[10px] text-teal-500"></i> Tra cứu tài liệu
-                            (OPAC)</a></li>
-                    <li><a href="#" class="hover:text-teal-400 transition flex items-center gap-1.5"><i
-                                class="fa-solid fa-angle-right text-[10px] text-teal-500"></i> Mượn & Gia hạn sách</a>
+                                class="fa-solid fa-angle-right text-[10px] text-teal-500"></i> Tra cứu tài liệu</a>
                     </li>
                     <li><a href="#" class="hover:text-teal-400 transition flex items-center gap-1.5"><i
-                                class="fa-solid fa-angle-right text-[10px] text-teal-500"></i> Đặt phòng học nhóm</a>
+                                class="fa-solid fa-angle-right text-[10px] text-teal-500"></i> Mượn trả tài liệu</a>
                     </li>
                     <li><a href="#" class="hover:text-teal-400 transition flex items-center gap-1.5"><i
-                                class="fa-solid fa-angle-right text-[10px] text-teal-500"></i> Yêu cầu bổ sung tài
-                            liệu</a></li>
+                                class="fa-solid fa-angle-right text-[10px] text-teal-500"></i> Xem thông tin </a>
+                    </li>
                 </ul>
             </div>
 
-            <!-- Cột 3: Học liệu số -->
+            <!-- Cột 3: Project Info -->
             <div>
                 <h4
                     class="text-white font-bold text-xs mb-4 uppercase tracking-wider border-l-2 border-teal-500 pl-2.5">
-                    Học Liệu Số
+                    Dự Án Thư Viện ĐHQG-HCM Nhóm 8
                 </h4>
-                <ul class="space-y-2.5 text-xs font-medium">
-                    <li><a href="#" class="hover:text-teal-400 transition flex items-center gap-1.5"><i
-                                class="fa-solid fa-angle-right text-[10px] text-teal-500"></i> Luận văn - Luận án</a>
-                    </li>
-                    <li><a href="#" class="hover:text-teal-400 transition flex items-center gap-1.5"><i
-                                class="fa-solid fa-angle-right text-[10px] text-teal-500"></i> Cơ sở dữ liệu quốc tế</a>
-                    </li>
-                    <li><a href="#" class="hover:text-teal-400 transition flex items-center gap-1.5"><i
-                                class="fa-solid fa-angle-right text-[10px] text-teal-500"></i> Tài nguyên số nội
-                            sinh</a></li>
-                    <li><a href="#" class="hover:text-teal-400 transition flex items-center gap-1.5"><i
-                                class="fa-solid fa-angle-right text-[10px] text-teal-500"></i> Bộ sưu tập đặc biệt</a>
-                    </li>
-                </ul>
+                <div class="space-y-3 text-xs leading-relaxed">
+                    <p class="flex items-start gap-2.5">
+                        <i class="fa-solid fa-code text-teal-400 mt-1 shrink-0"></i>
+                        <span>Laravel Framework & Tailwind CSS</span>
+                    </p>
+                    <p class="flex items-center gap-2.5">
+                        <i class="fa-solid fa-database text-teal-400 shrink-0"></i>
+                        <span>Cơ sở dữ liệu MySQL</span>
+                    </p>
+                    <p class="flex items-center gap-2.5">
+                        <i class="fa-solid fa-shield-halved text-teal-400 shrink-0"></i>
+                        <span>Tích hợp nhiều middleware bảo mật</span>
+                    </p>
+                </div>
             </div>
-
             <!-- Cột 4: Liên hệ -->
             <div>
                 <h4
@@ -74,15 +70,15 @@
                 <div class="space-y-3 text-xs leading-relaxed">
                     <p class="flex items-start gap-2.5">
                         <i class="fa-solid fa-location-dot text-teal-400 mt-1 shrink-0"></i>
-                        <span>Khu đô thị ĐHQG-HCM, Phường Linh Trung, Thành phố Thủ Đức, TP.HCM.</span>
+                        <span>Đường Võ Trường Toản, Khu đô thị ĐHQG-HCM, Khu phố 9, Phường Linh Xuân, TP.HCM</span>
                     </p>
                     <p class="flex items-center gap-2.5">
                         <i class="fa-solid fa-envelope text-teal-400 shrink-0"></i>
-                        <span>support.library@vnuhcm.edu.vn</span>
+                        <span>cenlib@vnuhcm.edu.vn</span>
                     </p>
                     <p class="flex items-center gap-2.5">
                         <i class="fa-solid fa-phone text-teal-400 shrink-0"></i>
-                        <span>(028) 37242181</span>
+                        <span>0855.066.247</span>
                     </p>
                 </div>
             </div>
@@ -93,7 +89,8 @@
         <div
             class="border-t border-slate-900 pt-6 flex flex-col sm:flex-row justify-between items-center text-xs text-slate-500 gap-3">
             <p>&copy; 2026 VNU-HCM Library System. Tất cả quyền được bảo lưu.</p>
-            <p class="font-semibold text-slate-400">Phát triển phục vụ đồ án học phần sinh viên ĐHQG-HCM</p>
+            <p class="font-semibold text-slate-400">Phát triển phục vụ đồ án học phần Phát Triển Phần Mềm Mã Nguồn Mở
+            </p>
         </div>
 
     </div>

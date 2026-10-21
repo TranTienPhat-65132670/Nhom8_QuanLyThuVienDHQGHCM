@@ -34,7 +34,7 @@
         <!-- Navigation Desktop -->
         <nav class="hidden lg:flex items-center gap-6 text-xs font-bold text-slate-600 uppercase tracking-wider">
             <a href="{{ route('client_index') }}"
-                class="hover:text-teal-600 transition text-teal-700 flex items-center gap-1.5">
+                class="{{ request()->routeIs('client_index') ? 'text-teal-600 border-b-2 border-teal-600 pb-1' : 'text-slate-600 hover:text-teal-600' }} hover:text-teal-600 transition flex items-center gap-1.5">
                 <i class="fa-solid fa-house text-sm"></i> Trang Chủ
             </a>
             <a href="#" class="hover:text-teal-600 transition flex items-center gap-1.5">
@@ -43,10 +43,12 @@
             <a href="#" class="hover:text-teal-600 transition flex items-center gap-1.5">
                 <i class="fa-solid fa-book-bookmark text-sm"></i> Dịch Vụ Mượn Trả
             </a>
-            <a href="#" class="hover:text-teal-600 transition flex items-center gap-1.5">
+            <a href="{{ route('rule') }}"
+                class="{{ request()->routeIs('rule') ? 'text-teal-600 border-b-2 border-teal-600 pb-1' : 'text-slate-600 hover:text-teal-600' }} hover:text-teal-600 transition flex items-center gap-1.5">
                 <i class="fa-solid fa-scale-balanced text-sm"></i> Nội Qui
             </a>
-            <a href="#" class="hover:text-teal-600 transition flex items-center gap-1.5">
+            <a href="{{ route('guide') }}"
+                class="{{ request()->routeIs('guide') ? 'text-teal-600 border-b-2 border-teal-600 pb-1' : 'text-slate-600 hover:text-teal-600' }} hover:text-teal-600 transition flex items-center gap-1.5">
                 <i class="fa-solid fa-circle-info text-sm"></i> Hướng Dẫn
             </a>
         </nav>

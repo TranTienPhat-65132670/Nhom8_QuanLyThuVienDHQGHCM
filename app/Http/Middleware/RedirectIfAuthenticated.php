@@ -16,7 +16,10 @@ class RedirectIfAuthenticated
     public function handle(Request $request, Closure $next): Response
     {
         if (session('user_id')) {
-            return redirect()->route('dashboard');
+            if (session('role') === 'admin') {
+                return redirect()->route('admin_index');
+            }
+            return redirect()->route('client_index');
         }
 
         return $next($request);

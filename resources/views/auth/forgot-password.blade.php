@@ -32,7 +32,7 @@
 
             @if (!session('otp_sent'))
                 {{-- ========== BƯỚC 1: NHẬP MSSV ============ --}}
-                <form action="{{ route('forgot-password') }}" method="POST" class="space-y-5">
+                <form action="{{ route('password.forgot.submit') }}" method="POST" class="space-y-5">
                     @csrf
                     <p class="text-sm text-slate-600 text-center mb-4">
                         Nhập mã số sinh viên để nhận mã OTP xác nhận.
@@ -80,7 +80,7 @@
                     </button>
 
                     <div class="flex justify-between items-center text-xs mt-4">
-                        <a href="{{ route('showForgotPasswordForm') }}"
+                        <a href="{{ route('password.forgot') }}"
                             class="text-teal-800 hover:underline font-semibold cursor-pointer">
                             <i class="fa-solid fa-arrow-left"></i> Nhập lại MSSV
                         </a>
@@ -90,7 +90,7 @@
 
             {{-- Quay lại đăng nhập --}}
             <div class="text-center mt-6">
-                <a href="{{ route('cancel-reset') }}"
+                <a href="{{ route('auth.cancel-reset') }}"
                     class="text-xs font-semibold text-teal-800 hover:text-teal-700 hover:underline transition inline-flex items-center gap-1.5">
                     <i class="fa-solid fa-arrow-left"></i> Quay lại đăng nhập
                 </a>

@@ -18,11 +18,11 @@ class CheckRole
 
         if (session('role') !== $role) {
             if (session('role') === 'member') {
-                return redirect()->route('member');
+                return redirect()->route('client_index');
             }
 
             if (session('role') === 'admin') {
-                return redirect()->route('admin');
+                return redirect()->route('admin_index');
             }
         }
 

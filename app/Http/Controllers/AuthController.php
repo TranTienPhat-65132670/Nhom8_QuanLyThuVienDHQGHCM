@@ -27,7 +27,7 @@ class AuthController extends Controller
     public function cancelReset()
     {
         $this->clearResetSession();
-        return redirect()->route('showLoginForm');
+        return redirect()->route('login');
     }
 
     public function showLoginForm()
@@ -48,7 +48,7 @@ class AuthController extends Controller
     public function showResetPasswordForm()
     {
         if (!session('otp_verified') || !session('student_code')) {
-            return redirect()->route('showForgotPasswordForm')->with('error', 'Vui lòng nhập MSSV!');
+            return redirect()->route('password.forgot')->with('error', 'Vui lòng nhập MSSV!');
         }
 
         return view('auth.reset-password');
@@ -95,9 +95,9 @@ class AuthController extends Controller
 
         switch ($user->role) {
             case 'admin':
-                return redirect()->route('admin')->with('success', 'Chào mừng Quản Trị Viên!');
+                return redirect()->route('admin_index')->with('success', 'Chào mừng Quản Trị Viên!');
             case 'member':
-                return redirect()->route('member')->with('success', 'Đăng nhập thành công');
+                return redirect()->route('client_index')->with('success', 'Đăng nhập thành công');
             default:
                 return abort(404);
         }
@@ -146,14 +146,14 @@ class AuthController extends Controller
 
         // kiểm tra OTP còn tồn tại không
         if (!session()->has('otp_code') || !session()->has('otp_expires_at')) {
-            return redirect()->route('showForgotPasswordForm')->with('error', 'Vui lòng nhập lại MSSV!');
+            return redirect()->route('password.forgot')->with('error', 'Vui lòng nhập lại MSSV!');
         }
 
         // kiểm tra mã OTP còn hiệu lực không
         $expiresAt = session('otp_expires_at');
         if (Carbon::now()->greaterThan($expiresAt)) {
             session()->forget(['otp_code', 'otp_sent', 'otp_expires_at', 'student_code']);
-            return redirect()->route('showForgotPasswordForm')
+            return redirect()->route('password.forgot')
                 ->withErrors([
                     'student_code' => "Mã OTP đã hết hiệu lực. Vui lòng nhập lại MSSV!"
                 ]);
@@ -170,14 +170,14 @@ class AuthController extends Controller
         session()->forget(['otp_code', 'otp_expires_at', 'otp_sent']);
         session(['otp_verified' => true]); // đánh dấu là đã nhập thành công
 
-        return redirect()->route('showResetPasswordForm')->with('success', 'Xác thực OTP thành công!');
+        return redirect()->route('password.reset')->with('success', 'Xác thực OTP thành công!');
     }
 
     public function resetPassword(Request $request)
     {
         // kiểm tra đã nhập otp chưa
         if (!session('otp_verified') || !session('student_code')) {
-            return redirect()->route('showForgotPasswordForm')->with('error', 'Vui lòng nhập lại MSSV!');
+            return redirect()->route('password.forgot')->with('error', 'Vui lòng nhập lại MSSV!');
         }
 
         ['password' => $password] = $request->validate([
@@ -193,7 +193,7 @@ class AuthController extends Controller
         $student_code = session('student_code');
         $user = DB::table('user')->where('student_code', $student_code)->first();
         if (!$user) {
-            return redirect()->route('showForgotPasswordForm')->with('error', 'Không tìm thấy tài khoản cần đổi mật khẩu!');
+            return redirect()->route('password.forgot')->with('error', 'Không tìm thấy tài khoản cần đổi mật khẩu!');
         }
 
         // cập nhật pass
@@ -204,7 +204,7 @@ class AuthController extends Controller
         // xóa session
         $this->clearResetSession();
 
-        return redirect()->route('showLoginForm')->with('success', 'Đổi mật khẩu mới thành công!');
+        return redirect()->route('login.submit')->with('success', 'Đổi mật khẩu mới thành công!');
     }
 
     public function logout(Request $request)
@@ -212,17 +212,6 @@ class AuthController extends Controller
         $request->session()->invalidate(); // xóa toàn bộ session
         $request->session()->regenerateToken();
 
-        return redirect()->route('showLoginForm')->with('success', 'Đăng xuất thành công!');
-    }
-
-
-
-    public function admin(Request $request)
-    {
-        return view('auth.admin');
-    }
-    public function member(Request $request)
-    {
-        return view('auth.member');
+        return redirect()->route('login.submit')->with('success', 'Đăng xuất thành công!');
     }
 }

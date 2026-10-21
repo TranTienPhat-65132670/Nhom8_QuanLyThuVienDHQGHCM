@@ -15,16 +15,6 @@ return Application::configure(basePath: dirname(__DIR__))
         //
     })
     ->withMiddleware(function (Middleware $middleware) {
-        $middleware->alias([
-            'check.login' => \App\Http\Middleware\CheckLogin::class,
-        ]);
-    })
-    ->withMiddleware(function (Middleware $middleware) {
-        $middleware->alias([
-            'role' => \App\Http\Middleware\CheckRole::class,
-        ]);
-    })
-    ->withMiddleware(function (Middleware $middleware) {
         // dùng để xóa các session đổi mật khẩu khi họ đổi sang trang khác
         // dùng cho trường hợp nếu người dùng đang ở form đổi mật khẩu
         // mà đổi url thì session vẫn còn lưu
@@ -33,6 +23,8 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
 
         $middleware->alias([
+            'check.login' => \App\Http\Middleware\CheckLogin::class,
+            'role' => \App\Http\Middleware\CheckRole::class,
             'redirect.if.auth' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         ]);
     })

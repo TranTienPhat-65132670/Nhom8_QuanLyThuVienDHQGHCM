@@ -3,6 +3,8 @@
 use App\Http\Controllers\ClientController;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\BookController;
 
 require __DIR__ . '/auth.php';
 require __DIR__ . '/admin.php';

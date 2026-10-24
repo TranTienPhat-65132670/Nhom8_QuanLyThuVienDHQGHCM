@@ -10,7 +10,12 @@ class ClientController extends Controller
 {
     public function index()
     {
-        return view('auth.member');
+        $latestBooks = Book::with('category')
+        ->orderBy('book_id', 'desc')
+        ->take(6)
+        ->get();
+
+        return view('auth.member', compact('latestBooks'));
     }
     // 1. Trang danh sách và Tra cứu sách
     public function books(Request $request)

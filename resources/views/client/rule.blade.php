@@ -1,6 +1,6 @@
 @extends('layout.client')
 
-@section('title', 'Nội Quy Thư Viện')
+@section('title', 'Nội Quy')
 
 @section('content')
     <div class="max-w-4xl mx-auto px-4 py-8">

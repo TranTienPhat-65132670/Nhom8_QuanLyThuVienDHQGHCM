@@ -1,6 +1,6 @@
   @extends('layout.client')
 
-  @section('title', 'Hướng Dẫn Sử Dụng')
+  @section('title', 'Hướng Dẫn')
 
   @section('content')
       <div class="max-w-4xl mx-auto px-4 py-8">

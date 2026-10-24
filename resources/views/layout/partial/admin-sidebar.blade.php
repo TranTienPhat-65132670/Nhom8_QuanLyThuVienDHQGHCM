@@ -35,7 +35,7 @@
         <a href="#"
             class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition hover:bg-slate-800 hover:text-white text-slate-300">
             <i class="fa-solid fa-book-bookmark text-base w-5 text-center"></i>
-            <span>Quản Lý Học Liệu & Sách</span>
+            <span>Quản Lý Sách</span>
         </a>
 
         <a href="#"
@@ -47,15 +47,7 @@
         <a href="#"
             class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition hover:bg-slate-800 hover:text-white text-slate-300">
             <i class="fa-solid fa-user-graduate text-base w-5 text-center"></i>
-            <span>Sinh Viên & Độc Giả</span>
-        </a>
-
-        <div class="pt-5 px-3 pb-2 text-[11px] font-bold uppercase tracking-wider text-slate-500">Hệ Thống</div>
-
-        <a href="#"
-            class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition hover:bg-slate-800 hover:text-white text-slate-300">
-            <i class="fa-solid fa-chart-line text-base w-5 text-center"></i>
-            <span>Báo Cáo Thống Kê</span>
+            <span>Sinh Viên</span>
         </a>
     </nav>
 

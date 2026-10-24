@@ -1,18 +1,18 @@
 <!-- Top Bar thông tin VNULIB -->
-<div class="bg-teal-900 text-teal-100 text-[11px] py-1.5 px-4 border-b border-teal-800 hidden sm:block">
+<div class="bg-teal-900 text-teal-100 text-[11px] py-1.5 border-b border-teal-800 hidden sm:block">
     <div class="max-w-7xl mx-auto flex justify-between items-center">
         <div class="flex items-center gap-4">
-            <span><i class="fa-solid fa-phone mr-1.5 text-teal-400"></i> (028) 37242181</span>
-            <span><i class="fa-solid fa-envelope mr-1.5 text-teal-400"></i> support.library@vnuhcm.edu.vn</span>
-            <span class="hidden md:inline"><i class="fa-solid fa-clock mr-1.5 text-teal-400"></i> Thứ 2 - Thứ 7: 07:30 -
-                20:30</span>
+            <span><i class="fa-solid fa-phone mr-1.5 text-teal-400"></i> 0396831160</span>
+            <span><i class="fa-solid fa-envelope mr-1.5 text-teal-400"></i> cenlib@vnuhcm.edu.vn</span>
+            <span class="hidden md:inline"><i class="fa-solid fa-clock mr-1.5 text-teal-400"></i> Thứ 2 - Thứ 7: 08:00 -
+                18:00</span>
         </div>
     </div>
 </div>
 
 <!-- Header chính -->
-<header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-xs">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex items-center justify-between">
+<header class="bg-white border-b border-slate-200 z-30 shadow-xs">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-2 py-3.5 flex items-center justify-between">
 
         <!-- Logo & Thương hiệu -->
         <a href="{{ route('client_index') }}" class="flex items-center gap-3 group">
@@ -58,9 +58,11 @@
             @if ($currentUser)
                 <!-- TRẠNG THÁI: ĐÃ ĐĂNG NHẬP -->
                 <div class="hidden sm:flex items-center gap-3">
-                    <div class="flex flex-col text-right">
+                    <div class="flex flex-col text-right gap-1">
                         <span class="text-xs font-bold text-slate-800">
-                            MSSV: {{ $currentUser->student_code }}
+                            <a href="#" class="hover:text-teal-500 hover:underline transition-all">
+                                MSSV: {{ $currentUser->student_code }}
+                            </a>
                         </span>
                         <span class="text-[10px] font-semibold text-emerald-600 flex items-center justify-end gap-1">
                             <i class="fa-solid fa-circle text-[6px]"></i>
@@ -79,7 +81,7 @@
                     <form action="{{ route('logout') }}" method="POST" class="inline">
                         @csrf
                         <button type="submit" title="Đăng xuất khỏi hệ thống"
-                            class="px-3.5 py-2 bg-red-50 hover:bg-red-100 text-red-600 rounded-xl text-xs font-bold transition flex items-center gap-1.5 border border-red-200/60 cursor-pointer">
+                            class="px-3.5 py-2 sm:hidden lg:block bg-red-50 hover:bg-red-100 text-red-600 rounded-xl text-xs font-bold transition flex items-center gap-1.5 border border-red-200/60 cursor-pointer">
                             <i class="fa-solid fa-right-from-bracket"></i>
                             <span>Đăng Xuất</span>
                         </button>
@@ -158,17 +160,17 @@
         </a>
         <a href="#" class="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-100 transition">
             <i class="fa-solid fa-magnifying-glass w-5 text-center text-sm text-teal-600"></i>
-            <span>Tra Cứu OPAC</span>
+            <span>Tra Cứu Tài Liệu</span>
         </a>
         <a href="#" class="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-100 transition">
             <i class="fa-solid fa-database w-5 text-center text-sm text-teal-600"></i>
-            <span>Cơ Sở Dữ Liệu</span>
+            <span>Mượn Trả Tài Liệu</span>
         </a>
-        <a href="#" class="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-100 transition">
-            <i class="fa-solid fa-book-bookmark w-5 text-center text-sm text-teal-600"></i>
-            <span>Dịch Vụ Mượn Trả</span>
+        <a href="{{ route('rule') }}" class="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-100 transition">
+            <i class="fa-solid fa-scale-balanced w-5 text-center text-sm text-teal-600"></i>
+            <span>Nội Qui</span>
         </a>
-        <a href="#" class="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-100 transition">
+        <a href="{{ route('guide') }}" class="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-100 transition">
             <i class="fa-solid fa-circle-info w-5 text-center text-sm text-teal-600"></i>
             <span>Hướng Dẫn</span>
         </a>

@@ -47,15 +47,15 @@
                     Dự Án Thư Viện ĐHQG-HCM Nhóm 8
                 </h4>
                 <div class="space-y-3 text-xs leading-relaxed">
-                    <p class="flex items-start gap-2.5">
-                        <i class="fa-solid fa-code text-teal-400 mt-1 shrink-0"></i>
+                    <p class="grid grid-cols-[25px_1fr] items-center">
+                        <i class="fa-solid fa-laptop-code text-teal-400 mt-1 shrink-0"></i>
                         <span>Laravel Framework & Tailwind CSS</span>
                     </p>
-                    <p class="flex items-center gap-2.5">
+                    <p class="grid grid-cols-[25px_1fr] items-center">
                         <i class="fa-solid fa-database text-teal-400 shrink-0"></i>
                         <span>Cơ sở dữ liệu MySQL</span>
                     </p>
-                    <p class="flex items-center gap-2.5">
+                    <p class="grid grid-cols-[25px_1fr] items-center">
                         <i class="fa-solid fa-shield-halved text-teal-400 shrink-0"></i>
                         <span>Tích hợp nhiều middleware bảo mật</span>
                     </p>

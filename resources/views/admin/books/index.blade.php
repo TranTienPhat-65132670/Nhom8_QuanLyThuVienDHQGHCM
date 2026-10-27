@@ -7,16 +7,13 @@
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-5 rounded-2xl shadow-xs border border-slate-200">
         <div>
             <h1 class="text-xl font-bold text-slate-800">Kho Sách Thư Viện</h1>
-            <p class="text-xs text-slate-500 mt-1">Quản lý toàn bộ đầu sách, tài liệu học tập trong hệ thống</p>
+            <p class="text-xs text-slate-500 mt-1">Quản lý toàn bộ đầu sách trong hệ thống</p>
         </div>
         <div class="flex items-center gap-2">
-            <!-- Nút xem trang tra cứu Độc giả -->
             <a href="{{ route('client.books.index') }}" target="_blank" 
                class="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-xl flex items-center gap-1.5 transition border border-slate-200">
                 <i class="fa-solid fa-arrow-up-right-from-square text-slate-500"></i> Xem Trang Độc Giả
             </a>
-
-            <!-- Nút thêm sách mới -->
             <a href="{{ route('books.create') }}" 
                class="px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-xl flex items-center gap-2 shadow-sm transition">
                 <i class="fa-solid fa-plus"></i> Thêm Sách Mới
@@ -31,7 +28,6 @@
         </div>
     @endif
 
-    <!-- Bộ Lọc và Tìm Kiếm -->
     <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs">
         <form method="GET" action="{{ route('books.index') }}" class="grid grid-cols-1 md:grid-cols-3 gap-3">
             <div>
@@ -59,68 +55,63 @@
         </form>
     </div>
 
-    <!-- Bảng Kho Sách -->
     <div class="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
         <table class="w-full text-left border-collapse">
             <thead>
                 <tr class="bg-slate-50 border-b border-slate-200 text-xs font-semibold text-slate-600 uppercase tracking-wider">
-                    <th class="p-4 w-16 text-center">Bìa</th>
+                    <th class="p-4 w-20 text-center">Bìa</th>
                     <th class="p-4">Tên Sách</th>
-                    <th class="p-4">Tác Giả</th>
-                    <th class="p-4">Danh Mục</th>
-                    <th class="p-4">ISBN</th>
-                    <th class="p-4 text-center">Số Lượng</th>
-                    <th class="p-4">Vị Trí Kệ</th>
-                    <th class="p-4 text-center">Trạng Thái</th>
-                    <th class="p-4 text-right">Thao Tác</th>
+                    <th class="p-4 text-center w-36">Số Lượng</th>
+                    <th class="p-4 text-center w-36">Trạng Thái</th>
+                    <th class="p-4 text-right w-36">Thao Tác</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-slate-100 text-xs text-slate-700">
                 @forelse($books as $book)
                     <tr class="hover:bg-slate-50/80 transition">
+                        <!-- 1. Cột Ảnh Bìa -->
                         <td class="p-4 text-center">
                             @if($book->book_image)
-                                <img src="{{ asset('storage/' . $book->book_image) }}" alt="Bìa" class="w-10 h-14 object-cover rounded shadow-xs mx-auto">
+                                <img src="{{ str_starts_with($book->book_image, 'book/') ? asset($book->book_image) : asset('storage/' . $book->book_image) }}" 
+                                     alt="Bìa" class="w-12 h-16 object-cover rounded shadow-xs mx-auto">
                             @else
-                                <div class="w-10 h-14 bg-slate-100 rounded flex items-center justify-center text-slate-400 mx-auto">
+                                <div class="w-12 h-16 bg-slate-100 rounded flex items-center justify-center text-slate-400 mx-auto">
                                     <i class="fa-solid fa-book"></i>
                                 </div>
                             @endif
                         </td>
-                        <td class="p-4 font-bold text-slate-900">{{ $book->book_name }}</td>
-                        <td class="p-4 text-slate-600">{{ $book->author }}</td>
+
+                        <!-- 2. Cột Tên Sách -->
                         <td class="p-4">
-                            <span class="px-2 py-0.5 bg-blue-50 text-blue-700 rounded text-[11px] font-medium">
-                                {{ $book->category->category_name ?? 'N/A' }}
-                            </span>
+                            <span class="font-bold text-slate-900 text-sm block">{{ $book->book_name }}</span>
+                            <span class="text-slate-400 text-[11px] block mt-0.5">Mã ISBN: {{ $book->isbn }}</span>
                         </td>
-                        <td class="p-4 font-mono text-slate-500">{{ $book->isbn }}</td>
+
+                        <!-- 3. Cột Số Lượng -->
                         <td class="p-4 text-center">
                             <span class="font-bold text-emerald-600">{{ $book->available_quantity }}</span> / 
                             <span class="text-slate-500">{{ $book->total_quantity }}</span>
                         </td>
-                        <td class="p-4 text-slate-600 font-medium">{{ $book->location ?? 'Chưa xếp kệ' }}</td>
+
+                        <!-- 4. Cột Trạng Thái -->
                         <td class="p-4 text-center">
                             @if($book->available_quantity > 0)
-                                <span class="px-2 py-0.5 bg-emerald-100 text-emerald-800 rounded-full text-[10px] font-bold">Còn Sách</span>
+                                <span class="px-2.5 py-1 bg-emerald-100 text-emerald-800 rounded-full text-[10px] font-bold">Còn Sách</span>
                             @else
-                                <span class="px-2 py-0.5 bg-rose-100 text-rose-800 rounded-full text-[10px] font-bold">Hết Sách</span>
+                                <span class="px-2.5 py-1 bg-rose-100 text-rose-800 rounded-full text-[10px] font-bold">Hết Sách</span>
                             @endif
                         </td>
+
+                        <!-- 5. Cột Thao Tác -->
                         <td class="p-4 text-right space-x-1">
-                            <!-- Nút con mắt: Xem chi tiết sách trên trang Độc giả -->
                             <a href="{{ route('client.books.show', $book->slug) }}" target="_blank" 
                                class="p-2 hover:bg-blue-50 text-blue-600 rounded-lg inline-block transition" title="Xem trên trang Độc giả">
                                 <i class="fa-regular fa-eye"></i>
                             </a>
-
-                            <!-- Nút Sửa -->
                             <a href="{{ route('books.edit', $book->book_id) }}" 
                                class="p-2 hover:bg-amber-50 text-amber-600 rounded-lg inline-block transition" title="Sửa">
                                 <i class="fa-solid fa-pen-to-square"></i>
                             </a>
-
-                            <!-- Nút Xóa -->
                             <form action="{{ route('books.destroy', $book->book_id) }}" method="POST" class="inline" onsubmit="return confirm('Bạn có chắc chắn muốn xóa cuốn sách này?')">
                                 @csrf
                                 @method('DELETE')
@@ -132,7 +123,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="9" class="p-8 text-center text-slate-400">Không tìm thấy cuốn sách nào trong kho.</td>
+                        <td colspan="5" class="p-8 text-center text-slate-400">Không tìm thấy cuốn sách nào trong kho.</td>
                     </tr>
                 @endforelse
             </tbody>

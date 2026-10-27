@@ -47,8 +47,14 @@
                 <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden hover:shadow-md transition flex flex-col justify-between">
                     <div>
                         <div class="h-56 bg-slate-100 overflow-hidden relative">
-                            <img src="{{ $book->book_image ? asset('storage/' . $book->book_image) : asset('images/default-book.png') }}" 
-                                 alt="{{ $book->book_name }}" class="w-full h-full object-cover">
+                            {{-- Cập nhật xử lý hiển thị ảnh bìa linh hoạt --}}
+                            @if($book->book_image)
+                                <img src="{{ str_starts_with($book->book_image, 'book/') ? asset($book->book_image) : asset('storage/' . $book->book_image) }}" 
+                                     alt="{{ $book->book_name }}" class="w-full h-full object-cover">
+                            @else
+                                <img src="{{ asset('images/default-book.png') }}" 
+                                     alt="{{ $book->book_name }}" class="w-full h-full object-cover">
+                            @endif
                             
                             <span class="absolute top-3 right-3 px-2.5 py-1 text-[10px] font-bold rounded-full {{ $book->available_quantity > 0 ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700' }}">
                                 {{ $book->available_quantity > 0 ? 'Còn ' . $book->available_quantity . ' cuốn' : 'Hết sách' }}

@@ -5,13 +5,17 @@
 @section('content')
 <div class="max-w-6xl mx-auto px-4 py-8 space-y-8">
     
-    <!-- Khối Thông Tin Sách Chi Tiết -->
     <div class="bg-white p-6 md:p-8 rounded-2xl border border-slate-200 shadow-xs grid grid-cols-1 md:grid-cols-3 gap-8">
         <!-- Ảnh Bìa -->
         <div class="flex flex-col items-center">
             <div class="w-full max-w-[240px] h-[340px] rounded-xl overflow-hidden shadow-xs border border-slate-100">
-                <img src="{{ $book->book_image ? asset('storage/' . $book->book_image) : asset('images/default-book.png') }}" 
-                     alt="{{ $book->book_name }}" class="w-full h-full object-cover">
+                @if($book->book_image)
+                    <img src="{{ str_starts_with($book->book_image, 'book/') ? asset($book->book_image) : asset('storage/' . $book->book_image) }}" 
+                         alt="{{ $book->book_name }}" class="w-full h-full object-cover">
+                @else
+                    <img src="{{ asset('images/default-book.png') }}" 
+                         alt="{{ $book->book_name }}" class="w-full h-full object-cover">
+                @endif
             </div>
             <div class="mt-4 text-center">
                 <span class="inline-block px-3 py-1 text-xs font-semibold rounded-full {{ $book->available_quantity > 0 ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700' }}">
@@ -20,7 +24,6 @@
             </div>
         </div>
 
-        <!-- Thông tin chi tiết & Vị trí kệ -->
         <div class="md:col-span-2 space-y-5">
             <div>
                 <span class="text-[11px] font-semibold text-blue-600 bg-blue-50 px-2.5 py-1 rounded-md">
@@ -30,15 +33,13 @@
                 <p class="text-xs text-slate-500 mt-1">Tác giả: <strong class="text-slate-700">{{ $book->author }}</strong></p>
             </div>
 
-            <!-- Bảng thông tin kỹ thuật & vị trí -->
             <div class="grid grid-cols-2 gap-4 p-4 bg-slate-50 rounded-xl text-xs">
                 <div><span class="text-slate-500">Mã ISBN:</span> <strong class="text-slate-800 block mt-0.5">{{ $book->isbn }}</strong></div>
                 <div><span class="text-slate-500">Ngôn ngữ:</span> <strong class="text-slate-800 block mt-0.5">{{ $book->language }}</strong></div>
                 <div><span class="text-slate-500">Số trang:</span> <strong class="text-slate-800 block mt-0.5">{{ $book->page_count ?? 'Đang cập nhật' }}</strong></div>
-                <div><span class="text-slate-500">Vị trí kệ sách:</span> <strong class="text-blue-600 font-bold block mt-0.5">{{ $book->location ?? 'Chưa xếp kệ' }}</strong></div>
+                <div><span class="text-slate-500">Cơ sở thư viện:</span> <strong class="text-blue-600 font-bold block mt-0.5">{{ $book->location ?? 'Thư viện Trung tâm DHQG-HCM' }}</strong></div>
             </div>
 
-            <!-- Tóm tắt nội dung -->
             <div>
                 <h3 class="text-xs font-bold text-slate-800 mb-1">Tóm Tắt Nội Dung</h3>
                 <p class="text-xs text-slate-600 leading-relaxed bg-white p-3.5 rounded-xl border border-slate-200">
@@ -46,7 +47,6 @@
                 </p>
             </div>
 
-            <!-- Thao tác -->
             <div class="flex gap-3 pt-2">
                 @if($book->available_quantity > 0)
                     <button type="button" data-book-id="{{ $book->book_id }}" 
@@ -75,8 +75,13 @@
                 @foreach($relatedBooks as $related)
                     <a href="{{ route('client.books.show', $related->slug) }}" class="bg-white p-3 rounded-xl border border-slate-200 hover:shadow-xs transition group">
                         <div class="h-36 bg-slate-100 rounded-lg overflow-hidden mb-2">
-                            <img src="{{ $related->book_image ? asset('storage/' . $related->book_image) : asset('images/default-book.png') }}" 
-                                 class="w-full h-full object-cover group-hover:scale-105 transition">
+                            @if($related->book_image)
+                                <img src="{{ str_starts_with($related->book_image, 'book/') ? asset($related->book_image) : asset('storage/' . $related->book_image) }}" 
+                                     alt="{{ $related->book_name }}" class="w-full h-full object-cover group-hover:scale-105 transition">
+                            @else
+                                <img src="{{ asset('images/default-book.png') }}" 
+                                     alt="{{ $related->book_name }}" class="w-full h-full object-cover group-hover:scale-105 transition">
+                            @endif
                         </div>
                         <h4 class="text-xs font-bold text-slate-800 line-clamp-1 group-hover:text-blue-600">{{ $related->book_name }}</h4>
                         <p class="text-[11px] text-slate-500 mt-0.5">{{ $related->author }}</p>

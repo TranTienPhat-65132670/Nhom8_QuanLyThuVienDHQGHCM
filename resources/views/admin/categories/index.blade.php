@@ -7,7 +7,6 @@
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-5 rounded-2xl shadow-xs border border-slate-200">
         <div>
             <h1 class="text-xl font-bold text-slate-800">Danh Mục Sách</h1>
-            <p class="text-xs text-slate-500 mt-1">Quản lý các thể loại sách trong hệ thống thư viện</p>
         </div>
         <button onclick="openCreateModal()" class="px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-xl flex items-center gap-2 shadow-sm transition">
             <i class="fa-solid fa-plus"></i> Thêm Danh Mục
@@ -73,8 +72,9 @@
             </tbody>
         </table>
 
+        <!-- Phân trang tùy biến  -->
         <div class="p-4 border-t border-slate-100">
-            {{ $categories->links() }}
+            {{ $categories->links('components.custom-pagination') }}
         </div>
     </div>
 </div>

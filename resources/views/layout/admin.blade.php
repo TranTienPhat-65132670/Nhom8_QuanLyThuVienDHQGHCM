@@ -30,6 +30,11 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
+            // Tự động loại bỏ target="_blank" của tất cả nút/thẻ link trên trang để luôn mở ở TAB HIỆN TẠI
+            document.querySelectorAll('a[target="_blank"]').forEach(function(link) {
+                link.removeAttribute('target');
+            });
+
             const sidebar = document.getElementById('sidebar');
             const mainContent = document.getElementById('main-content');
             if (window.innerWidth >= 768 && localStorage.getItem('sidebarClosed') === 'true') {

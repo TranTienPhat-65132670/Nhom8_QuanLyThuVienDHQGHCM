@@ -7,11 +7,12 @@
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-5 rounded-2xl shadow-xs border border-slate-200">
         <div>
             <h1 class="text-xl font-bold text-slate-800">Kho Sách Thư Viện</h1>
-            <p class="text-xs text-slate-500 mt-1">Quản lý toàn bộ đầu sách trong hệ thống</p>
         </div>
         <div class="flex items-center gap-2">
-            <a href="{{ route('client.books.index') }}" target="_blank" 
-               class="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-xl flex items-center gap-1.5 transition border border-slate-200">
+            <!-- Nút chuyển sang trang Độc Giả -->
+            <a href="{{ route('client.books.index') }}" 
+            target="_self"
+            class="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-xl flex items-center gap-1.5 transition border border-slate-200">
                 <i class="fa-solid fa-arrow-up-right-from-square text-slate-500"></i> Xem Trang Độc Giả
             </a>
             <a href="{{ route('books.create') }}" 
@@ -27,7 +28,14 @@
             {{ session('success') }}
         </div>
     @endif
+    @if(session('error'))
+        <div class="p-4 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-xl flex items-center gap-2">
+            <i class="fa-solid fa-triangle-exclamation text-rose-500 text-sm"></i>
+            {{ session('error') }}
+        </div>
+    @endif
 
+    <!-- Bộ Lọc Sách -->
     <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs">
         <form method="GET" action="{{ route('books.index') }}" class="grid grid-cols-1 md:grid-cols-3 gap-3">
             <div>
@@ -45,7 +53,7 @@
                 </select>
             </div>
             <div class="flex gap-2">
-                <button type="submit" class="px-4 py-2 bg-slate-800 hover:bg-slate-900 text-white text-xs font-semibold rounded-xl flex items-center gap-1.5 transition">
+                <button type="submit" class="px-4 py-2 bg-slate-800 hover:bg-slate-900 text-white text-xs font-semibold rounded-xl flex items-center gap-1.5 transition cursor-pointer">
                     <i class="fa-solid fa-magnifying-glass"></i> Tìm Kiếm
                 </button>
                 <a href="{{ route('books.index') }}" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-xl flex items-center gap-1.5 transition">
@@ -55,6 +63,7 @@
         </form>
     </div>
 
+    <!-- Bảng Danh Sách Sách Kho -->
     <div class="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
         <table class="w-full text-left border-collapse">
             <thead>
@@ -69,10 +78,10 @@
             <tbody class="divide-y divide-slate-100 text-xs text-slate-700">
                 @forelse($books as $book)
                     <tr class="hover:bg-slate-50/80 transition">
-                        <!-- 1. Cột Ảnh Bìa -->
                         <td class="p-4 text-center">
                             @if($book->book_image)
                                 <img src="{{ str_starts_with($book->book_image, 'book/') ? asset($book->book_image) : asset('storage/' . $book->book_image) }}" 
+                                     onerror="this.onerror=null; this.src='https://via.placeholder.com/80x100?text=No+Cover';"
                                      alt="Bìa" class="w-12 h-16 object-cover rounded shadow-xs mx-auto">
                             @else
                                 <div class="w-12 h-16 bg-slate-100 rounded flex items-center justify-center text-slate-400 mx-auto">
@@ -81,33 +90,33 @@
                             @endif
                         </td>
 
-                        <!-- 2. Cột Tên Sách -->
                         <td class="p-4">
                             <span class="font-bold text-slate-900 text-sm block">{{ $book->book_name }}</span>
                             <span class="text-slate-400 text-[11px] block mt-0.5">Mã ISBN: {{ $book->isbn }}</span>
                         </td>
 
-                        <!-- 3. Cột Số Lượng -->
                         <td class="p-4 text-center">
                             <span class="font-bold text-emerald-600">{{ $book->available_quantity }}</span> / 
                             <span class="text-slate-500">{{ $book->total_quantity }}</span>
                         </td>
 
-                        <!-- 4. Cột Trạng Thái -->
                         <td class="p-4 text-center">
-                            @if($book->available_quantity > 0)
+                            @if($book->status == 0)
+                                <span class="px-2.5 py-1 bg-rose-100 text-rose-800 rounded-full text-[10px] font-bold">Tạm Ngưng</span>
+                            @elseif($book->available_quantity > 0)
                                 <span class="px-2.5 py-1 bg-emerald-100 text-emerald-800 rounded-full text-[10px] font-bold">Còn Sách</span>
                             @else
-                                <span class="px-2.5 py-1 bg-rose-100 text-rose-800 rounded-full text-[10px] font-bold">Hết Sách</span>
+                                <span class="px-2.5 py-1 bg-amber-100 text-amber-800 rounded-full text-[10px] font-bold">Hết Sách</span>
                             @endif
                         </td>
 
-                        <!-- 5. Cột Thao Tác -->
                         <td class="p-4 text-right space-x-1">
-                            <a href="{{ route('client.books.show', $book->slug) }}" target="_blank" 
-                               class="p-2 hover:bg-blue-50 text-blue-600 rounded-lg inline-block transition" title="Xem trên trang Độc giả">
+                            <!-- Xem chi tiết Admin -->
+                            <a href="{{ route('books.show', $book->book_id) }}" 
+                               class="p-2 hover:bg-blue-50 text-blue-600 rounded-lg inline-block transition" title="Xem chi tiết sách (Admin)">
                                 <i class="fa-regular fa-eye"></i>
                             </a>
+                            <!-- Chỉnh sửa sách -->
                             <a href="{{ route('books.edit', $book->book_id) }}" 
                                class="p-2 hover:bg-amber-50 text-amber-600 rounded-lg inline-block transition" title="Sửa">
                                 <i class="fa-solid fa-pen-to-square"></i>
@@ -115,7 +124,7 @@
                             <form action="{{ route('books.destroy', $book->book_id) }}" method="POST" class="inline" onsubmit="return confirm('Bạn có chắc chắn muốn xóa cuốn sách này?')">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="p-2 hover:bg-rose-50 text-rose-600 rounded-lg transition" title="Xóa">
+                                <button type="submit" class="p-2 hover:bg-rose-50 text-rose-600 rounded-lg transition cursor-pointer" title="Xóa">
                                     <i class="fa-solid fa-trash-can"></i>
                                 </button>
                             </form>
@@ -130,7 +139,7 @@
         </table>
 
         <div class="p-4 border-t border-slate-100">
-            {{ $books->links() }}
+            {{ $books->links('components.custom-pagination') }}
         </div>
     </div>
 </div>

@@ -9,12 +9,12 @@ use Illuminate\Validation\Rule;
 
 class CategoryController extends Controller
 {
-    // 1. Hiển thị danh sách danh mục 
+    // 1. Hiển thị danh sách danh mục
     public function index()
     {
         $categories = Category::withCount('books')
             ->orderBy('category_id', 'desc')
-            ->paginate(10);
+            ->paginate(5); // 👉 Cập nhật phân trang 5 dòng/trang
 
         return view('admin.categories.index', compact('categories'));
     }

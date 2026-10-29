@@ -37,8 +37,9 @@
                 class="hover:text-teal-600 transition text-teal-700 flex items-center gap-1.5">
                 <i class="fa-solid fa-house text-sm"></i> Trang Chủ
             </a>
-            <a href="#" class="hover:text-teal-600 transition flex items-center gap-1.5">
-                <i class="fa-solid fa-magnifying-glass text-sm"></i> Tra Cứu Sách
+            <a href="{{ route('client.books.index') }}" 
+            class="{{ request()->routeIs('client.books.*') ? 'text-blue-600 font-bold' : 'text-slate-600' }} hover:text-blue-600 transition">
+                Tra Cứu Sách
             </a>
             <a href="#" class="hover:text-teal-600 transition flex items-center gap-1.5">
                 <i class="fa-solid fa-book-bookmark text-sm"></i> Dịch Vụ Mượn Trả

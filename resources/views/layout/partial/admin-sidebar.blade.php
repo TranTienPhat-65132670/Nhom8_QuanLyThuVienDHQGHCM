@@ -57,6 +57,24 @@
             <i class="fa-solid fa-chart-line text-base w-5 text-center"></i>
             <span>Báo Cáo Thống Kê</span>
         </a>
+
+        <!-- Quản Lý Danh Mục -->
+        <a href="{{ route('categories.index') }}"
+            class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition hover:bg-slate-800 hover:text-white {{ request()->routeIs('categories.*') ? 'bg-blue-600 text-white' : 'text-slate-300' }}">
+            <i class="fa-solid fa-layer-group text-base w-5 text-center"></i>
+            <span>Quản Lý Danh Mục</span>
+        </a>
+        <!-- Quản Lý Sách -->
+        <a href="{{ route('books.index') }}"
+            class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition hover:bg-slate-800 hover:text-white {{ request()->routeIs('books.*') ? 'bg-blue-600 text-white' : 'text-slate-300' }}">
+            <i class="fa-solid fa-book-bookmark text-base w-5 text-center"></i>
+            <span>Quản Lý Học Liệu & Sách</span>
+        </a>
+        <a href="{{ route('client.books.index') }}" target="_blank" 
+            class="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-xl transition flex items-center gap-1.5">
+            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+            <span>Xem trang Độc giả</span>
+        </a>
     </nav>
 
     <!-- Footer Sidebar -->

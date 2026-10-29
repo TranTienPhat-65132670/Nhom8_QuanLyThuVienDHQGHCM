@@ -11,3 +11,6 @@ Route::get('/tra-cuu-sach', [ClientController::class, 'books'])->name('client.bo
 
 // Xem chi tiết từng cuốn sách qua slug
 Route::get('/sach/{slug}', [ClientController::class, 'showBook'])->name('client.books.show');
+
+Route::get('/rule', [ClientController::class, 'rule'])->name('rule');
+Route::get('/guide', [ClientController::class, 'guide'])->name('guide');

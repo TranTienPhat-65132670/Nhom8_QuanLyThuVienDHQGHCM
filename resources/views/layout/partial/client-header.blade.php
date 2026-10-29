@@ -2,10 +2,10 @@
 <div class="bg-teal-900 text-teal-100 text-[11px] py-1.5 px-4 border-b border-teal-800 hidden sm:block">
     <div class="max-w-7xl mx-auto flex justify-between items-center">
         <div class="flex items-center gap-4">
-            <span><i class="fa-solid fa-phone mr-1.5 text-teal-400"></i> (028) 37242181</span>
-            <span><i class="fa-solid fa-envelope mr-1.5 text-teal-400"></i> support.library@vnuhcm.edu.vn</span>
-            <span class="hidden md:inline"><i class="fa-solid fa-clock mr-1.5 text-teal-400"></i> Thứ 2 - Thứ 7: 07:30 -
-                20:30</span>
+            <span><i class="fa-solid fa-phone mr-1.5 text-teal-400"></i> 0396831160</span>
+            <span><i class="fa-solid fa-envelope mr-1.5 text-teal-400"></i> cenlib@vnuhcm.edu.vn</span>
+            <span class="hidden md:inline"><i class="fa-solid fa-clock mr-1.5 text-teal-400"></i> Thứ 2 - Thứ 7: 08:00 -
+                18:00</span>
         </div>
     </div>
 </div>
@@ -15,7 +15,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex items-center justify-between">
 
         <!-- Logo & Thương hiệu -->
-        <a href="{{ route('client_index') }}" class="flex items-center gap-3 group">
+        <a href="{{ route('client.index') }}" class="flex items-center gap-3 group">
             <div
                 class="w-10 h-10 rounded-xl bg-white p-1 shadow-md border border-slate-100 flex items-center justify-center group-hover:scale-105 transition-transform duration-200">
                 <img src="{{ asset('images/icon_web.png') }}" alt="Logo ĐHQG-HCM" class="w-full h-full object-contain">
@@ -33,21 +33,23 @@
 
         <!-- Navigation Desktop -->
         <nav class="hidden lg:flex items-center gap-6 text-xs font-bold text-slate-600 uppercase tracking-wider">
-            <a href="{{ route('client_index') }}"
-                class="hover:text-teal-600 transition text-teal-700 flex items-center gap-1.5">
+            <a href="{{ route('client.index') }}"
+                class="{{ request()->routeIs('client.index') ? 'text-teal-600 border-b-2 border-teal-600 pb-1' : 'text-slate-600 hover:text-teal-600' }} hover:text-teal-600 transition flex items-center gap-1.5">
                 <i class="fa-solid fa-house text-sm"></i> Trang Chủ
             </a>
-            <a href="{{ route('client.books.index') }}" 
-            class="{{ request()->routeIs('client.books.*') ? 'text-blue-600 font-bold' : 'text-slate-600' }} hover:text-blue-600 transition">
-                Tra Cứu Sách
+            <a href="{{ route('client.books.index') }}"
+                class="{{ request()->routeIs('client.books.index') ? 'text-teal-600 border-b-2 border-teal-600 pb-1' : 'text-slate-600 hover:text-teal-600' }} hover:text-teal-600 transition flex items-center gap-1.5">
+                <i class="fa-solid fa-magnifying-glass text-sm"></i> Tra Cứu Sách
             </a>
             <a href="#" class="hover:text-teal-600 transition flex items-center gap-1.5">
                 <i class="fa-solid fa-book-bookmark text-sm"></i> Dịch Vụ Mượn Trả
             </a>
-            <a href="#" class="hover:text-teal-600 transition flex items-center gap-1.5">
+            <a href="{{ route('rule') }}"
+                class="{{ request()->routeIs('rule') ? 'text-teal-600 border-b-2 border-teal-600 pb-1' : 'text-slate-600 hover:text-teal-600' }} hover:text-teal-600 transition flex items-center gap-1.5">
                 <i class="fa-solid fa-scale-balanced text-sm"></i> Nội Qui
             </a>
-            <a href="#" class="hover:text-teal-600 transition flex items-center gap-1.5">
+            <a href="{{ route('guide') }}"
+                class="{{ request()->routeIs('guide') ? 'text-teal-600 border-b-2 border-teal-600 pb-1' : 'text-slate-600 hover:text-teal-600' }} hover:text-teal-600 transition flex items-center gap-1.5">
                 <i class="fa-solid fa-circle-info text-sm"></i> Hướng Dẫn
             </a>
         </nav>
@@ -150,7 +152,7 @@
 
     <!-- Các Navigation Links Mobile -->
     <nav class="flex-1 p-4 space-y-1.5 overflow-y-auto text-xs font-bold uppercase tracking-wider text-slate-700">
-        <a href="{{ route('client_index') }}"
+        <a href="{{ route('client.index') }}"
             class="flex items-center gap-3 p-3 rounded-xl bg-teal-50 text-teal-700 font-black">
             <i class="fa-solid fa-house w-5 text-center text-sm"></i>
             <span>Trang Chủ</span>

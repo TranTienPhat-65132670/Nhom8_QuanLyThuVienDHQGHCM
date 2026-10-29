@@ -8,10 +8,6 @@ require __DIR__ . '/auth.php';
 require __DIR__ . '/admin.php';
 require __DIR__ . '/client.php';
 
-Route::middleware(['role:member'])->group(function () {
-    Route::get('/', [ClientController::class, 'index'])->name('client_index');
-});
-
 Route::get('/test-db', function () {
     try {
         $hashed_password = password_hash('test', PASSWORD_DEFAULT);

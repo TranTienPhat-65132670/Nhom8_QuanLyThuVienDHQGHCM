@@ -97,7 +97,7 @@ class AuthController extends Controller
             case 'admin':
                 return redirect()->route('admin_index')->with('success', 'Chào mừng Quản Trị Viên!');
             case 'member':
-                return redirect()->route('client_index')->with('success', 'Đăng nhập thành công');
+                return redirect()->route('client.index')->with('success', 'Đăng nhập thành công');
             default:
                 return abort(404);
         }

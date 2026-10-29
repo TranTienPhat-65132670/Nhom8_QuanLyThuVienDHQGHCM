@@ -8,12 +8,26 @@ use App\Models\Category;
 
 class ClientController extends Controller
 {
+    public function rule()
+    {
+        return view('client.rule');
+    }
+
+    public function guide()
+    {
+        return view('client.guide');
+    }
+
     public function index()
     {
         $latestBooks = Book::with('category')
-        ->orderBy('book_id', 'desc')
-        ->take(6)
-        ->get();
+            ->orderBy('book_id', 'desc')
+            ->take(6)
+            ->get();
+
+        if (session()->has('user_id') && session()->has('role') === 'admin') {
+            return view('auth.admin');
+        }
 
         return view('auth.member', compact('latestBooks'));
     }
@@ -27,8 +41,8 @@ class ClientController extends Controller
             $keyword = trim($request->keyword);
             $query->where(function ($q) use ($keyword) {
                 $q->where('book_name', 'LIKE', "%{$keyword}%")
-                  ->orWhere('author', 'LIKE', "%{$keyword}%")
-                  ->orWhere('isbn', 'LIKE', "%{$keyword}%");
+                    ->orWhere('author', 'LIKE', "%{$keyword}%")
+                    ->orWhere('isbn', 'LIKE', "%{$keyword}%");
             });
         }
 

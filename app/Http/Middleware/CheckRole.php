@@ -18,7 +18,7 @@ class CheckRole
 
         if (session('role') !== $role) {
             if (session('role') === 'member') {
-                return redirect()->route('client_index');
+                return redirect()->route('client.index');
             }
 
             if (session('role') === 'admin') {

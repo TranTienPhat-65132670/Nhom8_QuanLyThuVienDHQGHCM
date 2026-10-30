@@ -57,34 +57,62 @@
         <!-- Khu vực Tài Khoản & Mobile Menu Button -->
         <div class="flex items-center gap-3">
             @if ($currentUser)
-                <!-- TRẠNG THÁI: ĐÃ ĐĂNG NHẬP -->
-                <div class="hidden sm:flex items-center gap-3">
-                    <div class="flex flex-col text-right">
-                        <span class="text-xs font-bold text-slate-800">
-                            MSSV: {{ $currentUser->student_code }}
-                        </span>
-                        <span class="text-[10px] font-semibold text-emerald-600 flex items-center justify-end gap-1">
-                            <i class="fa-solid fa-circle text-[6px]"></i>
-                            {{ $currentUser->role === 'admin' ? 'Quản Trị Viên' : 'Độc Giả Thư Viện' }}
-                        </span>
-                    </div>
+                <!-- TRẠNG THÁI: ĐÃ ĐĂNG NHẬP (DROPDOWN MSSV) -->
+                <div class="relative hidden sm:block" id="user-dropdown-container">
+                    <button onclick="toggleUserDropdown()" type="button"
+                        class="flex items-center gap-2.5 px-3.5 py-2 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl transition cursor-pointer focus:outline-none">
+                        <div
+                            class="w-8 h-8 rounded-lg bg-teal-600 text-white font-bold flex items-center justify-center text-xs">
+                            <i class="fa-solid fa-user"></i>
+                        </div>
+                        <div class="flex flex-col text-left">
+                            <span class="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+                                MSSV: {{ $currentUser->student_code }}
+                                <i class="fa-solid fa-chevron-down text-[10px] text-slate-500 transition-transform duration-200"
+                                    id="dropdown-chevron"></i>
+                            </span>
+                            <span class="text-[10px] font-semibold text-emerald-600 flex items-center gap-1">
+                                <i class="fa-solid fa-circle text-[5px]"></i>
+                                {{ $currentUser->role === 'admin' ? 'Quản Trị Viên' : 'Độc Giả' }}
+                            </span>
+                        </div>
+                    </button>
 
-                    @if ($currentUser->role === 'admin')
-                        <a href="{{ route('admin_index') }}"
-                            class="px-3.5 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-semibold shadow-sm transition flex items-center gap-1.5">
-                            <i class="fa-solid fa-user-shield text-amber-400"></i>
-                            <span>Trang Admin</span>
+                    <!-- Dropdown Menu -->
+                    <div id="user-dropdown-menu"
+                        class="hidden absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-xl border border-slate-200 py-1.5 z-50 text-xs font-semibold text-slate-700">
+
+                        @if ($currentUser->role === 'admin')
+                            <a href="{{ route('admin_index') }}"
+                                class="flex items-center gap-2.5 px-4 py-2.5 hover:bg-slate-50 text-slate-900 border-b border-slate-100">
+                                <i class="fa-solid fa-user-shield text-amber-500 w-4 text-center"></i> Trang Quản Trị
+                                (Admin)
+                            </a>
+                        @endif
+
+                        <!-- 1. Trang thông tin cá nhân -->
+                        <a href="#"
+                            class="flex items-center gap-2.5 px-4 py-2.5 hover:bg-teal-50 hover:text-teal-700 transition">
+                            <i class="fa-regular fa-id-card text-teal-600 w-4 text-center"></i> Trang thông tin cá nhân
                         </a>
-                    @endif
 
-                    <form action="{{ route('logout') }}" method="POST" class="inline">
-                        @csrf
-                        <button type="submit" title="Đăng xuất khỏi hệ thống"
-                            class="px-3.5 py-2 bg-red-50 hover:bg-red-100 text-red-600 rounded-xl text-xs font-bold transition flex items-center gap-1.5 border border-red-200/60 cursor-pointer">
-                            <i class="fa-solid fa-right-from-bracket"></i>
-                            <span>Đăng Xuất</span>
-                        </button>
-                    </form>
+                        <!-- 2. Trang yêu thích -->
+                        <a href="{{ route('client.books.favorites') }}"
+                            class="flex items-center gap-2.5 px-4 py-2.5 hover:bg-rose-50 hover:text-rose-600 transition">
+                            <i class="fa-regular fa-heart text-rose-500 w-4 text-center"></i> Sách yêu thích
+                        </a>
+
+                        <div class="h-px bg-slate-100 my-1"></div>
+
+                        <!-- 3. Nút đăng xuất -->
+                        <form action="{{ route('logout') }}" method="POST" class="block">
+                            @csrf
+                            <button type="submit"
+                                class="w-full flex items-center gap-2.5 px-4 py-2.5 text-left hover:bg-red-50 text-red-600 transition cursor-pointer">
+                                <i class="fa-solid fa-right-from-bracket w-4 text-center"></i> Đăng xuất
+                            </button>
+                        </form>
+                    </div>
                 </div>
             @else
                 <!-- TRẠNG THÁI: CHƯA ĐĂNG NHẬP (GUEST) -->
@@ -124,24 +152,27 @@
     <!-- Thông tin người dùng trên mobile -->
     <div class="p-4 bg-slate-50 border-b border-slate-200">
         @if ($currentUser)
-            <div class="flex items-center justify-between mb-3">
-                <div>
-                    <div class="text-xs font-bold text-slate-800">MSSV: {{ $currentUser->student_code }}</div>
-                    <div class="text-[10px] text-emerald-600 font-semibold">
-                        {{ $currentUser->role === 'admin' ? 'Quản Trị Viên' : 'Độc Giả' }}</div>
+            <div class="space-y-2">
+                <div class="text-xs font-bold text-slate-800">MSSV: {{ $currentUser->student_code }}</div>
+                <div class="text-[10px] text-emerald-600 font-semibold mb-2">
+                    {{ $currentUser->role === 'admin' ? 'Quản Trị Viên' : 'Độc Giả' }}
                 </div>
-                @if ($currentUser->role === 'admin')
-                    <a href="{{ route('admin_index') }}"
-                        class="px-3 py-1.5 bg-slate-900 text-white rounded-lg text-xs font-bold">Admin</a>
-                @endif
+
+                <div class="space-y-1 pt-2 border-t border-slate-200 text-xs font-semibold">
+                    <a href="#" class="block p-2 rounded-lg hover:bg-teal-50 hover:text-teal-700">Trang thông tin
+                        cá nhân</a>
+                    <a href="#" class="block p-2 rounded-lg hover:bg-rose-50 hover:text-rose-600">Trang yêu
+                        thích</a>
+                </div>
+
+                <form action="{{ route('logout') }}" method="POST" class="pt-2">
+                    @csrf
+                    <button type="submit"
+                        class="w-full py-2 bg-red-100 text-red-600 rounded-lg text-xs font-bold hover:bg-red-200 transition">
+                        <i class="fa-solid fa-right-from-bracket mr-1"></i> Đăng Xuất
+                    </button>
+                </form>
             </div>
-            <form action="{{ route('logout') }}" method="POST">
-                @csrf
-                <button type="submit"
-                    class="w-full py-2 bg-red-100 text-red-600 rounded-lg text-xs font-bold hover:bg-red-200 transition">
-                    <i class="fa-solid fa-right-from-bracket mr-1"></i> Đăng Xuất
-                </button>
-            </form>
         @else
             <a href="{{ route('login') }}"
                 class="block w-full text-center py-2.5 bg-teal-600 text-white rounded-xl text-xs font-bold uppercase tracking-wider shadow-md">
@@ -157,19 +188,20 @@
             <i class="fa-solid fa-house w-5 text-center text-sm"></i>
             <span>Trang Chủ</span>
         </a>
-        <a href="#" class="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-100 transition">
+        <a href="{{ route('client.books.index') }}"
+            class="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-100 transition">
             <i class="fa-solid fa-magnifying-glass w-5 text-center text-sm text-teal-600"></i>
-            <span>Tra Cứu OPAC</span>
-        </a>
-        <a href="#" class="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-100 transition">
-            <i class="fa-solid fa-database w-5 text-center text-sm text-teal-600"></i>
-            <span>Cơ Sở Dữ Liệu</span>
+            <span>Tra Cứu Sách</span>
         </a>
         <a href="#" class="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-100 transition">
             <i class="fa-solid fa-book-bookmark w-5 text-center text-sm text-teal-600"></i>
             <span>Dịch Vụ Mượn Trả</span>
         </a>
-        <a href="#" class="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-100 transition">
+        <a href="{{ route('rule') }}" class="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-100 transition">
+            <i class="fa-solid fa-scale-balanced w-5 text-center text-sm text-teal-600"></i>
+            <span>Nội Qui</span>
+        </a>
+        <a href="{{ route('guide') }}" class="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-100 transition">
             <i class="fa-solid fa-circle-info w-5 text-center text-sm text-teal-600"></i>
             <span>Hướng Dẫn</span>
         </a>
@@ -193,4 +225,27 @@
         drawer.classList.toggle('translate-x-full');
         overlay.classList.toggle('hidden');
     }
+
+    // Toggle User Dropdown Desktop
+    function toggleUserDropdown() {
+        const menu = document.getElementById('user-dropdown-menu');
+        const chevron = document.getElementById('dropdown-chevron');
+
+        menu.classList.toggle('hidden');
+        chevron.classList.toggle('rotate-180');
+    }
+
+    // Đóng dropdown khi click ra ngoài
+    window.addEventListener('click', function(e) {
+        const container = document.getElementById('user-dropdown-container');
+        const menu = document.getElementById('user-dropdown-menu');
+        const chevron = document.getElementById('dropdown-chevron');
+
+        if (container && !container.contains(e.target)) {
+            if (menu && !menu.classList.contains('hidden')) {
+                menu.classList.add('hidden');
+                if (chevron) chevron.classList.remove('rotate-180');
+            }
+        }
+    });
 </script>

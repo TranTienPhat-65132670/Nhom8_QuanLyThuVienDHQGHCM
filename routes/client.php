@@ -14,3 +14,11 @@ Route::get('/sach/{slug}', [ClientController::class, 'showBook'])->name('client.
 
 Route::get('/rule', [ClientController::class, 'rule'])->name('rule');
 Route::get('/guide', [ClientController::class, 'guide'])->name('guide');
+
+
+// route cần đăng nhập
+Route::middleware(['check.login'])->group(function () {
+  // sách yêu thích
+  Route::post('/sach/{id}/yeu-thich', [ClientController::class, 'addToFavourite'])->name('client.books.favorite');
+  Route::get('/sach-yeu-thich', [ClientController::class, 'favoriteBooks'])->name('client.books.favorites');
+});

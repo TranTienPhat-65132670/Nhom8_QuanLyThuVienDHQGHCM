@@ -41,9 +41,6 @@
                 class="{{ request()->routeIs('client.books.index') ? 'text-teal-600 border-b-2 border-teal-600 pb-1' : 'text-slate-600 hover:text-teal-600' }} hover:text-teal-600 transition flex items-center gap-1.5">
                 <i class="fa-solid fa-magnifying-glass text-sm"></i> Tra Cứu Sách
             </a>
-            <a href="#" class="hover:text-teal-600 transition flex items-center gap-1.5">
-                <i class="fa-solid fa-book-bookmark text-sm"></i> Dịch Vụ Mượn Trả
-            </a>
             <a href="{{ route('rule') }}"
                 class="{{ request()->routeIs('rule') ? 'text-teal-600 border-b-2 border-teal-600 pb-1' : 'text-slate-600 hover:text-teal-600' }} hover:text-teal-600 transition flex items-center gap-1.5">
                 <i class="fa-solid fa-scale-balanced text-sm"></i> Nội Qui
@@ -100,6 +97,12 @@
                         <a href="{{ route('client.books.favorites') }}"
                             class="flex items-center gap-2.5 px-4 py-2.5 hover:bg-rose-50 hover:text-rose-600 transition">
                             <i class="fa-regular fa-heart text-rose-500 w-4 text-center"></i> Sách yêu thích
+                        </a>
+
+                        <!-- 3. Mượn / Trả Sách -->
+                        <a href="{{ route('client.borrow.index') }}"
+                            class="flex items-center gap-2.5 px-4 py-2.5 hover:bg-sky-50 hover:text-sky-600 transition">
+                            <i class="fa-solid fa-receipt text-sky-500 w-4 text-center"></i> Phiếu mượn của tôi
                         </a>
 
                         <div class="h-px bg-slate-100 my-1"></div>
@@ -192,10 +195,6 @@
             class="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-100 transition">
             <i class="fa-solid fa-magnifying-glass w-5 text-center text-sm text-teal-600"></i>
             <span>Tra Cứu Sách</span>
-        </a>
-        <a href="#" class="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-100 transition">
-            <i class="fa-solid fa-book-bookmark w-5 text-center text-sm text-teal-600"></i>
-            <span>Dịch Vụ Mượn Trả</span>
         </a>
         <a href="{{ route('rule') }}" class="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-100 transition">
             <i class="fa-solid fa-scale-balanced w-5 text-center text-sm text-teal-600"></i>

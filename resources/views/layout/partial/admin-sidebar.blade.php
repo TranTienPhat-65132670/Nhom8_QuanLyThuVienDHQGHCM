@@ -23,8 +23,7 @@
     <nav class="flex-1 px-3 py-5 space-y-1 overflow-y-auto">
         <div class="px-3 pb-2 text-[11px] font-bold uppercase tracking-wider text-slate-500">Tổng Quan</div>
 
-        <a href="#"
-            class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold bg-blue-600 text-white shadow-lg shadow-blue-600/30">
+        <a href="#" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold text-white">
             <i class="fa-solid fa-chart-pie text-base w-5 text-center"></i>
             <span>Dashboard</span>
         </a>
@@ -34,28 +33,8 @@
 
         <a href="#"
             class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition hover:bg-slate-800 hover:text-white text-slate-300">
-            <i class="fa-solid fa-book-bookmark text-base w-5 text-center"></i>
-            <span>Quản Lý Học Liệu & Sách</span>
-        </a>
-
-        <a href="#"
-            class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition hover:bg-slate-800 hover:text-white text-slate-300">
-            <i class="fa-solid fa-arrows-rotate text-base w-5 text-center"></i>
-            <span>Mượn / Trả Sách</span>
-        </a>
-
-        <a href="#"
-            class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition hover:bg-slate-800 hover:text-white text-slate-300">
             <i class="fa-solid fa-user-graduate text-base w-5 text-center"></i>
             <span>Sinh Viên & Độc Giả</span>
-        </a>
-
-        <div class="pt-5 px-3 pb-2 text-[11px] font-bold uppercase tracking-wider text-slate-500">Hệ Thống</div>
-
-        <a href="#"
-            class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition hover:bg-slate-800 hover:text-white text-slate-300">
-            <i class="fa-solid fa-chart-line text-base w-5 text-center"></i>
-            <span>Báo Cáo Thống Kê</span>
         </a>
 
         <!-- Quản Lý Danh Mục -->
@@ -64,16 +43,18 @@
             <i class="fa-solid fa-layer-group text-base w-5 text-center"></i>
             <span>Quản Lý Danh Mục</span>
         </a>
+
         <!-- Quản Lý Sách -->
         <a href="{{ route('books.index') }}"
             class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition hover:bg-slate-800 hover:text-white {{ request()->routeIs('books.*') ? 'bg-blue-600 text-white' : 'text-slate-300' }}">
             <i class="fa-solid fa-book-bookmark text-base w-5 text-center"></i>
-            <span>Quản Lý Học Liệu & Sách</span>
+            <span>Quản Lý Sách</span>
         </a>
-        <a href="{{ route('client.books.index') }}" target="_blank" 
-            class="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-xl transition flex items-center gap-1.5">
-            <i class="fa-solid fa-arrow-up-right-from-square"></i>
-            <span>Xem trang Độc giả</span>
+
+        <a href="{{ route('admin.borrows.index') }}"
+            class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition hover:bg-slate-800 hover:text-white text-slate-300 {{ request()->routeIs('admin.borrows.*') ? 'bg-blue-600 text-white' : 'text-slate-300' }}}}">
+            <i class="fa-solid fa-arrows-rotate text-base w-5 text-center"></i>
+            <span>Mượn / Trả Sách</span>
         </a>
     </nav>
 

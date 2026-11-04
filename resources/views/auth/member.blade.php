@@ -132,8 +132,11 @@
 
                 <div class="space-y-3">
                     @forelse ($latestPosts as $post)
-                        <a href="{{ route('news.show', $post->post_id) }}"
-                            class="p-3.5 rounded-xl bg-slate-50/80 border border-slate-100 flex items-start gap-3 hover:bg-teal-50/30 transition">
+                        <button type="button" data-news-title="{{ $post->title }}"
+                            data-news-content="{{ $post->body }}"
+                            data-news-date="{{ \Illuminate\Support\Carbon::parse($post->created_at)->format('H:i d/m/Y') }}"
+                            aria-haspopup="dialog" aria-controls="news-detail-modal"
+                            class="w-full p-3.5 rounded-xl bg-slate-50/80 border border-slate-100 flex items-start gap-3 text-left hover:bg-teal-50/30 transition">
                             <span
                                 class="px-2.5 py-1 bg-teal-100 text-teal-800 font-bold text-[10px] rounded-lg shrink-0 mt-0.5">
                                 {{ \Illuminate\Support\Carbon::parse($post->created_at)->format('d/m') }}
@@ -146,7 +149,7 @@
                                     {{ $post->body }}
                                 </p>
                             </div>
-                        </a>
+                        </button>
                     @empty
                         <p class="rounded-xl bg-slate-50 p-4 text-xs text-slate-500">
                             Hiện chưa có thông báo mới.
@@ -210,6 +213,24 @@
         </div>
     </div>
 
+    <div id="news-detail-modal" data-news-modal role="dialog" aria-modal="true" aria-labelledby="news-modal-title"
+        class="fixed inset-0 z-[100] hidden items-center justify-center bg-slate-950/60 p-4">
+        <div class="w-full max-w-2xl rounded-2xl bg-white shadow-2xl">
+            <div class="flex items-start justify-between gap-4 border-b border-slate-100 p-5 sm:p-6">
+                <div>
+                    <p id="news-modal-date" class="text-sm font-medium text-teal-700"></p>
+                    <h2 id="news-modal-title" class="mt-2 text-xl font-bold text-slate-900 sm:text-2xl"></h2>
+                </div>
+                <button type="button" data-news-modal-close aria-label="Đóng thông báo"
+                    class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-slate-500 hover:bg-slate-100 hover:text-slate-900">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div id="news-modal-content"
+                class="max-h-[65vh] overflow-y-auto whitespace-pre-line p-5 text-sm leading-7 text-slate-700 sm:p-6"></div>
+        </div>
+    </div>
+
     <script>
         function scrollBookSlider(direction) {
             const slider = document.getElementById('bookSlider');
@@ -265,6 +286,47 @@
 
     @push('scripts')
         <script>
+            (() => {
+                const modal = document.querySelector('[data-news-modal]');
+                if (!modal) return;
+
+                const title = document.getElementById('news-modal-title');
+                const date = document.getElementById('news-modal-date');
+                const content = document.getElementById('news-modal-content');
+                const closeButton = modal.querySelector('[data-news-modal-close]');
+                let trigger = null;
+
+                const closeModal = () => {
+                    modal.hidden = true;
+                    modal.classList.add('hidden');
+                    modal.classList.remove('flex');
+                    document.body.classList.remove('overflow-hidden');
+                    trigger?.focus();
+                };
+
+                document.querySelectorAll('[data-news-title]').forEach((button) => {
+                    button.addEventListener('click', () => {
+                        trigger = button;
+                        title.textContent = button.dataset.newsTitle;
+                        date.textContent = button.dataset.newsDate;
+                        content.textContent = button.dataset.newsContent;
+                        modal.hidden = false;
+                        modal.classList.remove('hidden');
+                        modal.classList.add('flex');
+                        document.body.classList.add('overflow-hidden');
+                        closeButton.focus();
+                    });
+                });
+
+                closeButton.addEventListener('click', closeModal);
+                modal.addEventListener('click', (event) => {
+                    if (event.target === modal) closeModal();
+                });
+                document.addEventListener('keydown', (event) => {
+                    if (event.key === 'Escape' && !modal.hidden) closeModal();
+                });
+            })();
+
             const swiper = new Swiper('.main-banner-swiper', {
                 loop: true,
                 autoplay: {

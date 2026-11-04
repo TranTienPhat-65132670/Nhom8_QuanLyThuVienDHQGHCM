@@ -12,10 +12,6 @@
             · Người đăng: {{ $post->author_name }}
         </p>
         <h1 class="mt-3 text-3xl font-black leading-tight text-slate-900 sm:text-4xl">{{ $post->title }}</h1>
-        @if ($post->image_path)
-            <img src="{{ asset('storage/'.$post->image_path) }}" alt="{{ $post->title }}"
-                class="mt-8 max-h-[32rem] w-full rounded-2xl object-cover">
-        @endif
         <div class="mt-8 whitespace-pre-line text-base leading-8 text-slate-700">{{ $post->content }}</div>
     </article>
 @endsection

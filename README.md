@@ -57,3 +57,10 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+## Module tin tức
+
+- Chạy `php artisan migrate` để tạo bảng `news_posts`.
+- Chạy `php artisan storage:link` để hiển thị ảnh bài viết.
+- Cấu hình `MAIL_MAILER`, `MAIL_HOST`, `MAIL_PORT`, `MAIL_USERNAME`, `MAIL_PASSWORD` và `MAIL_FROM_ADDRESS` trong `.env` để gửi email thông báo cho độc giả có vai trò `member`.
+- Admin quản lý bài viết tại `/admin/tin-tuc`; độc giả xem tin tại `/tin-tuc`.

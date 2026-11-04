@@ -34,7 +34,7 @@ class NewsPostController extends Controller
         $validated = $request->validate([
             'title' => ['required', 'string', 'max:255'],
             'content' => ['required', 'string'],
-            'image' => ['required', 'image', 'max:5120'],
+            'image' => ['nullable', 'image', 'max:5120'],
         ]);
 
         $author = DB::table('user')
@@ -44,9 +44,12 @@ class NewsPostController extends Controller
         abort_unless($author, 403, 'Không tìm thấy tài khoản người đăng.');
 
         $now = now();
-        $imagePath = $request->file('image')->store('news', 'public');
-        if ($imagePath === false) {
-            throw new RuntimeException('Không thể lưu ảnh bài viết.');
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('news', 'public');
+            if ($imagePath === false) {
+                throw new RuntimeException('Không thể lưu ảnh bài viết.');
+            }
         }
 
         $postId = DB::table('post')->insertGetId([

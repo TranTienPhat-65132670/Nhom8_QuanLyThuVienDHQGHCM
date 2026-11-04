@@ -2,6 +2,27 @@
 
 @section('title', 'Trang Chủ - Thư Viện ĐHQGHCM')
 
+<style>
+    /* css scrollbar */
+    .custom-scrollbar::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-track {
+        background: #f1f5f9;
+        border-radius: 8px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 8px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: #94a3b8;
+    }
+</style>
+
 @section('content')
     <div class="max-w-7xl mx-auto px-4 py-8 space-y-10">
 
@@ -127,41 +148,35 @@
                     <h3 class="font-bold text-slate-900 text-sm uppercase flex items-center gap-2">
                         <i class="fa-solid fa-bullhorn text-teal-600"></i> Thông Báo Thư Viện Mới Nhất
                     </h3>
-                    <a href="#" class="text-xs font-bold text-teal-600 hover:underline">Xem tất cả</a>
+                    <a href="{{ route('news.index') }}" class="text-xs font-bold text-teal-600 hover:underline">Xem tất
+                        cả</a>
                 </div>
 
-                <div class="space-y-3">
-                    <div
-                        class="p-3.5 rounded-xl bg-slate-50/80 border border-slate-100 flex items-start gap-3 hover:bg-teal-50/30 transition">
-                        <span
-                            class="px-2.5 py-1 bg-teal-100 text-teal-800 font-bold text-[10px] rounded-lg shrink-0 mt-0.5">
-                            27/10
-                        </span>
-                        <div>
-                            <h4 class="text-xs font-bold text-slate-800 hover:text-teal-600 cursor-pointer transition">
-                                Thông báo dịch vụ mượn sách liên thư viện giữa các trường thành viên ĐHQG-HCM
-                            </h4>
-                            <p class="text-[11px] text-slate-500 mt-1 line-clamp-2">
-                                Nhằm hỗ trợ tối đa cho sinh viên trong quá trình thực hiện đồ án tốt nghiệp...
-                            </p>
-                        </div>
-                    </div>
-
-                    <div
-                        class="p-3.5 rounded-xl bg-slate-50/80 border border-slate-100 flex items-start gap-3 hover:bg-teal-50/30 transition">
-                        <span
-                            class="px-2.5 py-1 bg-emerald-100 text-emerald-800 font-bold text-[10px] rounded-lg shrink-0 mt-0.5">
-                            15/10
-                        </span>
-                        <div>
-                            <h4 class="text-xs font-bold text-slate-800 hover:text-teal-600 cursor-pointer transition">
-                                Mở rộng thời gian phục vụ phòng đọc tự học phục vụ kỳ thi giữa học kỳ
-                            </h4>
-                            <p class="text-[11px] text-slate-500 mt-1 line-clamp-2">
-                                Thư viện Trung tâm thông báo điều chỉnh thời gian phục vụ từ 07:00 đến 21:30 hàng ngày...
-                            </p>
-                        </div>
-                    </div>
+                <div class="space-y-3 max-h-[300px] overflow-y-auto pr-1 custom-scrollbar">
+                    @forelse ($latestPosts as $post)
+                        <button type="button" data-news-title="{{ $post->title }}"
+                            data-news-content="{{ $post->body }}"
+                            data-news-date="{{ \Illuminate\Support\Carbon::parse($post->created_at)->format('H:i d/m/Y') }}"
+                            aria-haspopup="dialog" aria-controls="news-detail-modal"
+                            class="w-full p-3.5 rounded-xl bg-slate-50/80 border border-slate-100 flex items-start gap-3 text-left hover:bg-teal-50/30 transition">
+                            <span
+                                class="px-2.5 py-1 bg-teal-100 text-teal-800 font-bold text-[10px] rounded-lg shrink-0 mt-0.5">
+                                {{ \Illuminate\Support\Carbon::parse($post->created_at)->format('d/m') }}
+                            </span>
+                            <div class="min-w-0">
+                                <h4 class="text-xs font-bold text-slate-800 hover:text-teal-600 transition">
+                                    {{ $post->title }}
+                                </h4>
+                                <p class="text-[11px] text-slate-500 mt-1 line-clamp-2">
+                                    {{ $post->body }}
+                                </p>
+                            </div>
+                        </button>
+                    @empty
+                        <p class="rounded-xl bg-slate-50 p-4 text-xs text-slate-500 text-center">
+                            Hiện chưa có thông báo mới trong vòng 1 tháng qua.
+                        </p>
+                    @endforelse
                 </div>
             </div>
 
@@ -220,6 +235,24 @@
         </div>
     </div>
 
+    <div id="news-detail-modal" data-news-modal role="dialog" aria-modal="true" aria-labelledby="news-modal-title"
+        class="fixed inset-0 z-[100] hidden items-center justify-center bg-slate-950/60 p-4">
+        <div class="w-full max-w-2xl rounded-2xl bg-white shadow-2xl">
+            <div class="flex items-start justify-between gap-4 border-b border-slate-100 p-5 sm:p-6">
+                <div>
+                    <p id="news-modal-date" class="text-sm font-medium text-teal-700"></p>
+                    <h2 id="news-modal-title" class="mt-2 text-xl font-bold text-slate-900 sm:text-2xl"></h2>
+                </div>
+                <button type="button" data-news-modal-close aria-label="Đóng thông báo"
+                    class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-slate-500 hover:bg-slate-100 hover:text-slate-900">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div id="news-modal-content"
+                class="max-h-[65vh] overflow-y-auto whitespace-pre-line p-5 text-sm leading-7 text-slate-700 sm:p-6"></div>
+        </div>
+    </div>
+
     <script>
         function scrollBookSlider(direction) {
             const slider = document.getElementById('bookSlider');
@@ -275,6 +308,47 @@
 
     @push('scripts')
         <script>
+            (() => {
+                const modal = document.querySelector('[data-news-modal]');
+                if (!modal) return;
+
+                const title = document.getElementById('news-modal-title');
+                const date = document.getElementById('news-modal-date');
+                const content = document.getElementById('news-modal-content');
+                const closeButton = modal.querySelector('[data-news-modal-close]');
+                let trigger = null;
+
+                const closeModal = () => {
+                    modal.hidden = true;
+                    modal.classList.add('hidden');
+                    modal.classList.remove('flex');
+                    document.body.classList.remove('overflow-hidden');
+                    trigger?.focus();
+                };
+
+                document.querySelectorAll('[data-news-title]').forEach((button) => {
+                    button.addEventListener('click', () => {
+                        trigger = button;
+                        title.textContent = button.dataset.newsTitle;
+                        date.textContent = button.dataset.newsDate;
+                        content.textContent = button.dataset.newsContent;
+                        modal.hidden = false;
+                        modal.classList.remove('hidden');
+                        modal.classList.add('flex');
+                        document.body.classList.add('overflow-hidden');
+                        closeButton.focus();
+                    });
+                });
+
+                closeButton.addEventListener('click', closeModal);
+                modal.addEventListener('click', (event) => {
+                    if (event.target === modal) closeModal();
+                });
+                document.addEventListener('keydown', (event) => {
+                    if (event.key === 'Escape' && !modal.hidden) closeModal();
+                });
+            })();
+
             const swiper = new Swiper('.main-banner-swiper', {
                 loop: true,
                 autoplay: {

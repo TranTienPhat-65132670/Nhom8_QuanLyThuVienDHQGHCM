@@ -41,6 +41,10 @@
                 class="{{ request()->routeIs('client.books.index') ? 'text-teal-600 border-b-2 border-teal-600 pb-1' : 'text-slate-600 hover:text-teal-600' }} hover:text-teal-600 transition flex items-center gap-1.5">
                 <i class="fa-solid fa-magnifying-glass text-sm"></i> Tra Cứu Sách
             </a>
+            <a href="{{ route('news.index') }}"
+                class="{{ request()->routeIs('news.*') ? 'text-teal-600 border-b-2 border-teal-600 pb-1' : 'text-slate-600 hover:text-teal-600' }} hover:text-teal-600 transition flex items-center gap-1.5">
+                <i class="fa-solid fa-newspaper text-sm"></i> Tin Tức
+            </a>
             <a href="{{ route('rule') }}"
                 class="{{ request()->routeIs('rule') ? 'text-teal-600 border-b-2 border-teal-600 pb-1' : 'text-slate-600 hover:text-teal-600' }} hover:text-teal-600 transition flex items-center gap-1.5">
                 <i class="fa-solid fa-scale-balanced text-sm"></i> Nội Qui
@@ -195,6 +199,11 @@
             class="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-100 transition">
             <i class="fa-solid fa-magnifying-glass w-5 text-center text-sm text-teal-600"></i>
             <span>Tra Cứu Sách</span>
+        </a>
+        <a href="{{ route('news.index') }}"
+            class="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-100 transition">
+            <i class="fa-solid fa-newspaper w-5 text-center text-sm text-teal-600"></i>
+            <span>Tin Tức</span>
         </a>
         <a href="{{ route('rule') }}" class="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-100 transition">
             <i class="fa-solid fa-scale-balanced w-5 text-center text-sm text-teal-600"></i>

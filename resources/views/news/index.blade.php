@@ -9,6 +9,35 @@
             <h1 class="mt-2 text-3xl font-black text-slate-900">Tin tức & thông báo</h1>
         </div>
 
+        <form method="GET" action="{{ route('news.index') }}"
+            class="mb-8 flex flex-wrap items-end gap-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+            <div>
+                <label for="date_from" class="mb-1 block text-sm font-semibold text-slate-700">Từ ngày</label>
+                <input id="date_from" name="date_from" type="date" value="{{ request('date_from') }}"
+                    class="rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-teal-600 focus:outline-none focus:ring-2 focus:ring-teal-100">
+            </div>
+            <div>
+                <label for="date_to" class="mb-1 block text-sm font-semibold text-slate-700">Đến ngày</label>
+                <input id="date_to" name="date_to" type="date" value="{{ request('date_to') }}"
+                    class="rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-teal-600 focus:outline-none focus:ring-2 focus:ring-teal-100">
+            </div>
+            <button type="submit"
+                class="rounded-lg bg-teal-700 px-4 py-2 text-sm font-semibold text-white hover:bg-teal-800">
+                <i class="fa-solid fa-filter mr-1"></i>Lọc tin
+            </button>
+            @if (request()->filled('date_from') || request()->filled('date_to'))
+                <a href="{{ route('news.index') }}" class="px-2 py-2 text-sm font-semibold text-slate-600 hover:text-slate-900">
+                    Xóa bộ lọc
+                </a>
+            @endif
+        </form>
+
+        @if ($errors->any())
+            <div class="mb-6 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+                {{ $errors->first() }}
+            </div>
+        @endif
+
         <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             @forelse ($posts as $post)
                 <article class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">

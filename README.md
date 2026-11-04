@@ -62,4 +62,6 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 
 - Import cơ sở dữ liệu thư viện trước; module dùng bảng `post` hiện có và chỉ lưu tiêu đề, nội dung, tác giả, trạng thái cùng thời gian đăng.
 - Bài đăng không cần ảnh và không gửi email; bài đã đăng sẽ xuất hiện trong thông báo trang chủ độc giả.
+- Chọn thông báo trên trang chủ để xem thời điểm đăng, tiêu đề và nội dung đầy đủ; danh sách tin tức sắp xếp mới nhất trước, lọc theo khoảng ngày và phân trang 10 bài.
+- Form admin bắt buộc có tiêu đề và nội dung; nếu thiếu, hệ thống báo lỗi bằng tiếng Việt.
 - Admin quản lý bài viết tại `/admin/tin-tuc`; độc giả xem tin tại `/tin-tuc`.

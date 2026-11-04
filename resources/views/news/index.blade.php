@@ -12,10 +12,6 @@
         <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             @forelse ($posts as $post)
                 <article class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-                    @if ($post->image_path)
-                        <img src="{{ asset('storage/'.$post->image_path) }}" alt="{{ $post->title }}"
-                            class="h-52 w-full object-cover">
-                    @endif
                     <div class="p-5">
                         <p class="text-xs font-medium text-slate-500">
                             {{ \Illuminate\Support\Carbon::parse($post->published_at)->format('d/m/Y') }}

@@ -26,10 +26,6 @@
         <div class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
             @forelse ($posts as $post)
                 <article class="flex flex-col gap-4 border-b border-slate-100 p-5 last:border-0 sm:flex-row">
-                    @if ($post->image_path)
-                        <img src="{{ asset('storage/'.$post->image_path) }}" alt="{{ $post->title }}"
-                            class="h-28 w-full rounded-xl object-cover sm:w-40">
-                    @endif
                     <div class="min-w-0 flex-1">
                         <h3 class="text-lg font-bold text-slate-900">{{ $post->title }}</h3>
                         <p class="mt-1 text-sm text-slate-500">

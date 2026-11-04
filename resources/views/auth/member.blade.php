@@ -2,6 +2,27 @@
 
 @section('title', 'Trang Chủ - Thư Viện ĐHQGHCM')
 
+<style>
+    /* css scrollbar */
+    .custom-scrollbar::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-track {
+        background: #f1f5f9;
+        border-radius: 8px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 8px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: #94a3b8;
+    }
+</style>
+
 @section('content')
     <div class="max-w-7xl mx-auto px-4 py-8 space-y-10">
 
@@ -127,10 +148,11 @@
                     <h3 class="font-bold text-slate-900 text-sm uppercase flex items-center gap-2">
                         <i class="fa-solid fa-bullhorn text-teal-600"></i> Thông Báo Thư Viện Mới Nhất
                     </h3>
-                    <a href="{{ route('news.index') }}" class="text-xs font-bold text-teal-600 hover:underline">Xem tất cả</a>
+                    <a href="{{ route('news.index') }}" class="text-xs font-bold text-teal-600 hover:underline">Xem tất
+                        cả</a>
                 </div>
 
-                <div class="space-y-3">
+                <div class="space-y-3 max-h-[300px] overflow-y-auto pr-1 custom-scrollbar">
                     @forelse ($latestPosts as $post)
                         <button type="button" data-news-title="{{ $post->title }}"
                             data-news-content="{{ $post->body }}"
@@ -151,8 +173,8 @@
                             </div>
                         </button>
                     @empty
-                        <p class="rounded-xl bg-slate-50 p-4 text-xs text-slate-500">
-                            Hiện chưa có thông báo mới.
+                        <p class="rounded-xl bg-slate-50 p-4 text-xs text-slate-500 text-center">
+                            Hiện chưa có thông báo mới trong vòng 1 tháng qua.
                         </p>
                     @endforelse
                 </div>

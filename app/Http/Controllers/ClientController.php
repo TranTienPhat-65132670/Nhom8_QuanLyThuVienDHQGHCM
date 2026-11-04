@@ -81,8 +81,8 @@ class ClientController extends Controller
     public function addToFavourite($id)
     {
         // kiểm tra sách có tồn tại trong db không
-        $book = DB::table('book')->where('book_id', $id);
-        if (! $book) {
+        $book = DB::table('book')->where('book_id', $id)->first();
+        if (!$book) {
             return back()->with('error', 'Không tìm thấy sách này!');
         }
 
@@ -110,28 +110,41 @@ class ClientController extends Controller
     public function favoriteBooks(Request $request)
     {
         $userId = session('user_id');
+        $keyword = $request->input('keyword');
+        $perPage = 5; // Cố định 5 item mỗi trang
+        $currentPage = $request->input('page', 1); // Trang hiện tại, mặc định là 1
 
-        // Lấy danh sách book_id mà user này đã lưu yêu thích
-        $bookIds = DB::table('favorite')
-            ->where('user_id', $userId)
-            ->pluck('book_id');
+        // 1. Khởi tạo query kết hợp bảng favorite và book
+        $query = DB::table('favorite')
+            ->join('book', 'favorite.book_id', '=', 'book.book_id')
+            ->where('favorite.user_id', $userId)
+            ->select('book.*');
 
-        // Khởi tạo query lấy thông tin các cuốn sách đó
-        $query = Book::with('category')->whereIn('book_id', $bookIds);
-
-        // Xử lý tra cứu / tìm kiếm từ khóa trong danh sách yêu thích
-        if ($request->filled('keyword')) {
-            $keyword = trim($request->keyword);
+        // 2. Xử lý tìm kiếm (theo tên sách hoặc tác giả)
+        if (!empty($keyword)) {
             $query->where(function ($q) use ($keyword) {
-                $q->where('book_name', 'LIKE', "%{$keyword}%")
-                    ->orWhere('author', 'LIKE', "%{$keyword}%")
-                    ->orWhere('isbn', 'LIKE', "%{$keyword}%");
+                $q->where('book.book_name', 'like', "%{$keyword}%")
+                    ->orWhere('book.author', 'like', "%{$keyword}%");
             });
         }
 
-        // Phân trang 12 cuốn/trang và giữ nguyên từ khóa tìm kiếm trên URL
-        $books = $query->orderBy('book_id', 'desc')->paginate(12)->withQueryString();
+        // 3. Tính tổng số bản ghi và tổng số trang
+        $totalItems = $query->count();
+        $totalPages = ceil($totalItems / $perPage);
 
-        return view('client.favourites.favourites', compact('books'));
+        // Đảm bảo trang hiện tại nằm trong khoảng hợp lệ
+        $currentPage = max(1, min($currentPage, $totalPages == 0 ? 1 : $totalPages));
+
+        // 4. Lấy dữ liệu cho trang hiện tại bằng skip (offset) và take (limit)
+        $offset = ($currentPage - 1) * $perPage;
+        $favorites = $query->skip($offset)->take($perPage)->get();
+
+        // 5. Trả về view kèm các biến phân trang thủ công
+        return view('client.favourites.favourites', compact(
+            'favorites',
+            'currentPage',
+            'totalPages',
+            'keyword'
+        ));
     }
 }

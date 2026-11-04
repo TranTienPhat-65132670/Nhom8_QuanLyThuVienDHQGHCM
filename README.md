@@ -62,6 +62,7 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 
 - Import cơ sở dữ liệu thư viện trước; module sử dụng bảng `post` hiện có và migration bổ sung cột `image_path`.
 - Chạy `php artisan migrate` để áp dụng migration cho bảng `post`.
-- Chạy `php artisan storage:link` để hiển thị ảnh bài viết.
+- Ảnh bài viết không bắt buộc. Chạy `php artisan storage:link` để hiển thị ảnh đã tải lên.
 - Cấu hình `MAIL_MAILER`, `MAIL_HOST`, `MAIL_PORT`, `MAIL_USERNAME`, `MAIL_PASSWORD` và `MAIL_FROM_ADDRESS` trong `.env` để gửi email thông báo cho độc giả có vai trò `member`.
+- Với `MAIL_MAILER=log`, bài viết vẫn được đăng nhưng email chỉ được ghi vào log, không gửi thật.
 - Admin quản lý bài viết tại `/admin/tin-tuc`; độc giả xem tin tại `/tin-tuc`.

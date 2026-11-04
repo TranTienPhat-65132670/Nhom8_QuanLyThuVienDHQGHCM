@@ -28,6 +28,10 @@ class NewsPostController extends Controller
         $validated = $request->validate([
             'title' => ['required', 'string', 'max:255'],
             'content' => ['required', 'string'],
+        ], [
+            'title.required' => 'Vui lòng nhập tiêu đề bài viết.',
+            'title.max' => 'Tiêu đề không được vượt quá 255 ký tự.',
+            'content.required' => 'Vui lòng nhập nội dung bài viết.',
         ]);
 
         $author = DB::table('user')
@@ -65,6 +69,10 @@ class NewsPostController extends Controller
         $validated = $request->validate([
             'title' => ['required', 'string', 'max:255'],
             'content' => ['required', 'string'],
+        ], [
+            'title.required' => 'Vui lòng nhập tiêu đề bài viết.',
+            'title.max' => 'Tiêu đề không được vượt quá 255 ký tự.',
+            'content.required' => 'Vui lòng nhập nội dung bài viết.',
         ]);
 
         DB::table('post')->where('post_id', $id)->update([
@@ -87,12 +95,37 @@ class NewsPostController extends Controller
         return redirect()->route('admin.news.index')->with('success', 'Đã xóa bài viết.');
     }
 
-    public function publicIndex()
+    public function publicIndex(Request $request)
     {
-        $posts = $this->postsQuery()
-            ->where('post.status', 1)
+        $dateToRules = ['nullable', 'date'];
+
+        if ($request->filled('date_from')) {
+            $dateToRules[] = 'after_or_equal:date_from';
+        }
+
+        $filters = $request->validate([
+            'date_from' => ['nullable', 'date'],
+            'date_to' => $dateToRules,
+        ], [
+            'date_from.date' => 'Ngày bắt đầu không hợp lệ.',
+            'date_to.date' => 'Ngày kết thúc không hợp lệ.',
+            'date_to.after_or_equal' => 'Ngày kết thúc phải từ ngày bắt đầu trở đi.',
+        ]);
+
+        $query = $this->postsQuery()->where('post.status', 1);
+
+        if (! empty($filters['date_from'])) {
+            $query->whereDate('post.created_at', '>=', $filters['date_from']);
+        }
+
+        if (! empty($filters['date_to'])) {
+            $query->whereDate('post.created_at', '<=', $filters['date_to']);
+        }
+
+        $posts = $query
             ->orderByDesc('post.created_at')
-            ->paginate(9);
+            ->paginate(10)
+            ->withQueryString();
 
         return view('news.index', compact('posts'));
     }

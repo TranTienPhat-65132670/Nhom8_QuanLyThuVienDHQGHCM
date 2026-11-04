@@ -45,6 +45,16 @@ class ExampleTest extends TestCase
 
         Mail::fake();
 
+        $invalidResponse = $this->withSession([
+            'user_id' => 'admin-id',
+            'role' => 'admin',
+        ])->post(route('admin.news.store'), [
+            'title' => '   ',
+            'content' => '',
+        ]);
+
+        $invalidResponse->assertSessionHasErrors(['title', 'content']);
+
         $response = $this->withSession([
             'user_id' => 'admin-id',
             'role' => 'admin',
@@ -59,6 +69,17 @@ class ExampleTest extends TestCase
             'body' => 'Article body',
             'status' => 1,
         ]);
+
+        $postId = DB::table('post')->where('title', 'News without an image')->value('post_id');
+        $invalidUpdateResponse = $this->withSession([
+            'user_id' => 'admin-id',
+            'role' => 'admin',
+        ])->put(route('admin.news.update', $postId), [
+            'title' => '',
+            'content' => '   ',
+        ]);
+
+        $invalidUpdateResponse->assertSessionHasErrors(['title', 'content']);
         Mail::assertNothingOutgoing();
     }
 
@@ -68,6 +89,7 @@ class ExampleTest extends TestCase
             $table->string('user_id')->primary();
             $table->string('role');
             $table->string('student_code')->nullable();
+            $table->string('student_name')->nullable();
         });
 
         Schema::create('book', function (Blueprint $table) {
@@ -120,6 +142,84 @@ class ExampleTest extends TestCase
         $response->assertOk()
             ->assertSee('Latest library notice')
             ->assertSee('Notice content appears on the homepage.')
+            ->assertSee('data-news-title="Latest library notice"', false)
+            ->assertSee('id="news-detail-modal"', false)
             ->assertDontSee('Unpublished draft');
+    }
+
+    public function test_public_news_can_be_filtered_by_date_and_is_paginated_ten_per_page(): void
+    {
+        Schema::create('user', function (Blueprint $table) {
+            $table->string('user_id')->primary();
+            $table->string('student_name')->nullable();
+        });
+
+        Schema::create('post', function (Blueprint $table) {
+            $table->increments('post_id');
+            $table->string('user_id');
+            $table->string('title');
+            $table->text('body')->nullable();
+            $table->boolean('status');
+            $table->string('slug');
+            $table->timestamps();
+        });
+
+        DB::table('user')->insert([
+            'user_id' => 'admin-id',
+            'student_name' => 'Admin',
+        ]);
+
+        $today = now()->startOfDay();
+        $posts = [];
+
+        for ($number = 1; $number <= 12; $number++) {
+            $createdAt = $today->copy()->addMinutes($number);
+            $posts[] = [
+                'user_id' => 'admin-id',
+                'title' => "Notice {$number}",
+                'body' => "Content {$number}",
+                'status' => 1,
+                'slug' => "notice-{$number}",
+                'created_at' => $createdAt,
+                'updated_at' => $createdAt,
+            ];
+        }
+
+        $yesterday = $today->copy()->subDay();
+        $posts[] = [
+            'user_id' => 'admin-id',
+            'title' => 'Yesterday notice',
+            'body' => 'Outside selected date range',
+            'status' => 1,
+            'slug' => 'yesterday-notice',
+            'created_at' => $yesterday,
+            'updated_at' => $yesterday,
+        ];
+        DB::table('post')->insert($posts);
+
+        $date = $today->toDateString();
+        $firstPage = $this->get(route('news.index', [
+            'date_from' => $date,
+            'date_to' => $date,
+        ]));
+
+        $firstPage->assertOk()
+            ->assertSee('Notice 12')
+            ->assertSee('Notice 3')
+            ->assertDontSee('Notice 2')
+            ->assertDontSee('Yesterday notice')
+            ->assertSee('page=2', false);
+
+        $secondPage = $this->get(route('news.index', [
+            'date_from' => $date,
+            'date_to' => $date,
+            'page' => 2,
+        ]));
+
+        $secondPage->assertOk()
+            ->assertSee('Notice 2')
+            ->assertSee('Notice 1')
+            ->assertDontSee('Notice 12')
+            ->assertDontSee('Yesterday notice');
     }
 }

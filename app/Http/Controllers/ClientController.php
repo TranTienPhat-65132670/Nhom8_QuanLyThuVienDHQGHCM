@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Book;
 use App\Models\Category;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class ClientController extends Controller
@@ -21,17 +21,23 @@ class ClientController extends Controller
 
     public function index()
     {
+        if (session()->has('user_id') && session('role') === 'admin') {
+            return view('auth.admin');
+        }
+
         $latestBooks = Book::with('category')
             ->orderBy('book_id', 'desc')
             ->take(6)
             ->get();
+        $latestPosts = DB::table('post')
+            ->where('status', 1)
+            ->orderByDesc('created_at')
+            ->take(5)
+            ->get();
 
-        if (session()->has('user_id') && session()->has('role') === 'admin') {
-            return view('auth.admin');
-        }
-
-        return view('auth.member', compact('latestBooks'));
+        return view('auth.member', compact('latestBooks', 'latestPosts'));
     }
+
     // 1. Trang danh sách và Tra cứu sách
     public function books(Request $request)
     {
@@ -78,7 +84,7 @@ class ClientController extends Controller
     {
         // kiểm tra sách có tồn tại trong db không
         $book = DB::table('book')->where('book_id', $id);
-        if (!$book) {
+        if (! $book) {
             return back()->with('error', 'Không tìm thấy sách này!');
         }
 

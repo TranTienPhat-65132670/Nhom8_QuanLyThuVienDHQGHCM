@@ -103,6 +103,12 @@
                             <i class="fa-regular fa-heart text-rose-500 w-4 text-center"></i> Sách yêu thích
                         </a>
 
+                        <!-- 3. Mượn / Trả Sách -->
+                        <a href="{{ route('client.borrow.index') }}"
+                            class="flex items-center gap-2.5 px-4 py-2.5 hover:bg-sky-50 hover:text-sky-600 transition">
+                            <i class="fa-solid fa-receipt text-sky-500 w-4 text-center"></i> Phiếu mượn của tôi
+                        </a>
+
                         <div class="h-px bg-slate-100 my-1"></div>
 
                         <!-- 3. Nút đăng xuất -->

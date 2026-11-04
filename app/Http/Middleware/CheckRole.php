@@ -24,6 +24,8 @@ class CheckRole
             if (session('role') === 'admin') {
                 return redirect()->route('admin_index');
             }
+
+            return redirect()->route('login')->with('error', 'Bạn không có quyền truy cập.');
         }
 
         return $next($request);

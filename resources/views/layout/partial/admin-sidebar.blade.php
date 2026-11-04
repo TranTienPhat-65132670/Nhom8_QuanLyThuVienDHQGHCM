@@ -50,6 +50,12 @@
             <span>Sinh Viên & Độc Giả</span>
         </a>
 
+        <a href="{{ route('admin.news.index') }}"
+            class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition hover:bg-slate-800 hover:text-white text-slate-300">
+            <i class="fa-solid fa-newspaper text-base w-5 text-center"></i>
+            <span>Quản Lý Tin Tức</span>
+        </a>
+
         <div class="pt-5 px-3 pb-2 text-[11px] font-bold uppercase tracking-wider text-slate-500">Hệ Thống</div>
 
         <a href="#"

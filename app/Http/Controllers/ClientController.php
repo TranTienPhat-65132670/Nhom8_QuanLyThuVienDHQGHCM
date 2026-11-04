@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Book;
 use App\Models\Category;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class ClientController extends Controller
@@ -21,17 +21,21 @@ class ClientController extends Controller
 
     public function index()
     {
+
         $latestBooks = Book::with('category')
             ->orderBy('book_id', 'desc')
             ->take(6)
             ->get();
+        $latestPosts = DB::table('post')
+            ->where('status', 1)
+            ->where('created_at', '>=', now()->subMonth()) // lấy thông báo mới nhất (1 tháng đổ lại)
+            ->orderByDesc('created_at')
+            ->take(5)
+            ->get();
 
-        if (session()->has('user_id') && session()->has('role') === 'admin') {
-            return view('auth.admin');
-        }
-
-        return view('auth.member', compact('latestBooks'));
+        return view('auth.member', compact('latestBooks', 'latestPosts'));
     }
+
     // 1. Trang danh sách và Tra cứu sách
     public function books(Request $request)
     {

@@ -32,10 +32,10 @@
             </div>
 
             <div>
-                <label for="image" class="mb-2 block text-sm font-semibold text-slate-700">Ảnh bài viết</label>
-                <input id="image" name="image" type="file" accept="image/*" {{ $isEditing ? '' : 'required' }}
+                <label for="image" class="mb-2 block text-sm font-semibold text-slate-700">Ảnh bài viết (không bắt buộc)</label>
+                <input id="image" name="image" type="file" accept="image/*"
                     class="block w-full rounded-xl border border-slate-300 p-3 text-sm">
-                <p class="mt-1 text-xs text-slate-500">Định dạng ảnh hợp lệ, dung lượng tối đa 5 MB.</p>
+                <p class="mt-1 text-xs text-slate-500">Có thể bỏ trống. Nếu chọn ảnh, dung lượng tối đa 5 MB.</p>
                 @error('image')<p class="mt-1 text-sm text-red-600">{{ $message }}</p>@enderror
                 @if ($isEditing && $post->image_path)
                     <img src="{{ asset('storage/'.$post->image_path) }}" alt="Ảnh hiện tại"

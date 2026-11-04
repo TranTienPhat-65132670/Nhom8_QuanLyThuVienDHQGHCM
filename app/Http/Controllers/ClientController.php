@@ -21,9 +21,6 @@ class ClientController extends Controller
 
     public function index()
     {
-        if (session()->has('user_id') && session('role') === 'admin') {
-            return view('auth.admin');
-        }
 
         $latestBooks = Book::with('category')
             ->orderBy('book_id', 'desc')
@@ -31,6 +28,7 @@ class ClientController extends Controller
             ->get();
         $latestPosts = DB::table('post')
             ->where('status', 1)
+            ->where('created_at', '>=', now()->subMonth()) // lấy thông báo mới nhất (1 tháng đổ lại)
             ->orderByDesc('created_at')
             ->take(5)
             ->get();

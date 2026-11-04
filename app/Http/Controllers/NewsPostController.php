@@ -13,7 +13,7 @@ class NewsPostController extends Controller
     {
         $posts = $this->postsQuery()
             ->orderByDesc('post.created_at')
-            ->paginate(10);
+            ->paginate(6);
 
         return view('admin.news.index', compact('posts'));
     }
@@ -124,7 +124,7 @@ class NewsPostController extends Controller
 
         $posts = $query
             ->orderByDesc('post.created_at')
-            ->paginate(10)
+            ->paginate(6)
             ->withQueryString();
 
         return view('news.index', compact('posts'));
@@ -161,7 +161,7 @@ class NewsPostController extends Controller
         $base = $base !== '' ? $base : 'tin-tuc';
 
         do {
-            $slug = $base.'-'.Str::lower(Str::random(8));
+            $slug = $base . '-' . Str::lower(Str::random(8));
             $query = DB::table('post')->where('slug', $slug);
 
             if ($exceptPostId !== null) {

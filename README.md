@@ -60,9 +60,6 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 
 ## Module tin tức
 
-- Import cơ sở dữ liệu thư viện trước; module sử dụng bảng `post` hiện có và migration bổ sung cột `image_path`.
-- Chạy `php artisan migrate` để áp dụng migration cho bảng `post`.
-- Ảnh bài viết không bắt buộc. Chạy `php artisan storage:link` để hiển thị ảnh đã tải lên.
-- Cấu hình `MAIL_MAILER`, `MAIL_HOST`, `MAIL_PORT`, `MAIL_USERNAME`, `MAIL_PASSWORD` và `MAIL_FROM_ADDRESS` trong `.env` để gửi email thông báo cho độc giả có vai trò `member`.
-- Với `MAIL_MAILER=log`, bài viết vẫn được đăng nhưng email chỉ được ghi vào log, không gửi thật.
+- Import cơ sở dữ liệu thư viện trước; module dùng bảng `post` hiện có và chỉ lưu tiêu đề, nội dung, tác giả, trạng thái cùng thời gian đăng.
+- Bài đăng không cần ảnh và không gửi email; bài đã đăng sẽ xuất hiện trong thông báo trang chủ độc giả.
 - Admin quản lý bài viết tại `/admin/tin-tuc`; độc giả xem tin tại `/tin-tuc`.

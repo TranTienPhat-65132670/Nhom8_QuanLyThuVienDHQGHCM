@@ -127,41 +127,31 @@
                     <h3 class="font-bold text-slate-900 text-sm uppercase flex items-center gap-2">
                         <i class="fa-solid fa-bullhorn text-teal-600"></i> Thông Báo Thư Viện Mới Nhất
                     </h3>
-                    <a href="#" class="text-xs font-bold text-teal-600 hover:underline">Xem tất cả</a>
+                    <a href="{{ route('news.index') }}" class="text-xs font-bold text-teal-600 hover:underline">Xem tất cả</a>
                 </div>
 
                 <div class="space-y-3">
-                    <div
-                        class="p-3.5 rounded-xl bg-slate-50/80 border border-slate-100 flex items-start gap-3 hover:bg-teal-50/30 transition">
-                        <span
-                            class="px-2.5 py-1 bg-teal-100 text-teal-800 font-bold text-[10px] rounded-lg shrink-0 mt-0.5">
-                            27/10
-                        </span>
-                        <div>
-                            <h4 class="text-xs font-bold text-slate-800 hover:text-teal-600 cursor-pointer transition">
-                                Thông báo dịch vụ mượn sách liên thư viện giữa các trường thành viên ĐHQG-HCM
-                            </h4>
-                            <p class="text-[11px] text-slate-500 mt-1 line-clamp-2">
-                                Nhằm hỗ trợ tối đa cho sinh viên trong quá trình thực hiện đồ án tốt nghiệp...
-                            </p>
-                        </div>
-                    </div>
-
-                    <div
-                        class="p-3.5 rounded-xl bg-slate-50/80 border border-slate-100 flex items-start gap-3 hover:bg-teal-50/30 transition">
-                        <span
-                            class="px-2.5 py-1 bg-emerald-100 text-emerald-800 font-bold text-[10px] rounded-lg shrink-0 mt-0.5">
-                            15/10
-                        </span>
-                        <div>
-                            <h4 class="text-xs font-bold text-slate-800 hover:text-teal-600 cursor-pointer transition">
-                                Mở rộng thời gian phục vụ phòng đọc tự học phục vụ kỳ thi giữa học kỳ
-                            </h4>
-                            <p class="text-[11px] text-slate-500 mt-1 line-clamp-2">
-                                Thư viện Trung tâm thông báo điều chỉnh thời gian phục vụ từ 07:00 đến 21:30 hàng ngày...
-                            </p>
-                        </div>
-                    </div>
+                    @forelse ($latestPosts as $post)
+                        <a href="{{ route('news.show', $post->post_id) }}"
+                            class="p-3.5 rounded-xl bg-slate-50/80 border border-slate-100 flex items-start gap-3 hover:bg-teal-50/30 transition">
+                            <span
+                                class="px-2.5 py-1 bg-teal-100 text-teal-800 font-bold text-[10px] rounded-lg shrink-0 mt-0.5">
+                                {{ \Illuminate\Support\Carbon::parse($post->created_at)->format('d/m') }}
+                            </span>
+                            <div class="min-w-0">
+                                <h4 class="text-xs font-bold text-slate-800 hover:text-teal-600 transition">
+                                    {{ $post->title }}
+                                </h4>
+                                <p class="text-[11px] text-slate-500 mt-1 line-clamp-2">
+                                    {{ $post->body }}
+                                </p>
+                            </div>
+                        </a>
+                    @empty
+                        <p class="rounded-xl bg-slate-50 p-4 text-xs text-slate-500">
+                            Hiện chưa có thông báo mới.
+                        </p>
+                    @endforelse
                 </div>
             </div>
 

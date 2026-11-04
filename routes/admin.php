@@ -18,5 +18,12 @@ Route::middleware(['check.login', 'role:admin'])->group(function () {
         Route::post('/{id}/update-status', [AdminController::class, 'updateStatus'])->name('updateStatus');
     });
 
-    // làm logic để hệ thống tự kiểm tra và cập nhật nếu phiếu quá hạn và làm logic phạt tiền
+    Route::prefix('admin/fines')->name('admin.fines.')->group(function () {
+        Route::get('/', [AdminController::class, 'fineIndex'])->name('index');
+        Route::get('/create', [AdminController::class, 'fineCreate'])->name('create');
+        Route::post('/', [AdminController::class, 'fineStore'])->name('store');
+        Route::get('/{id}/edit', [AdminController::class, 'fineEdit'])->name('edit');
+        Route::put('/{id}', [AdminController::class, 'fineUpdate'])->name('update');
+        Route::delete('/{id}', [AdminController::class, 'fineDestroy'])->name('destroy');
+    });
 });

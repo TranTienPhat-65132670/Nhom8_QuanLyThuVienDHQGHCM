@@ -5,7 +5,7 @@
     <div class="h-20 flex items-center justify-between px-5 bg-slate-950/60 border-b border-slate-800">
         <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-lg flex items-center justify-center overflow-hidden shadow-md bg-white p-1">
-                <img src="images/icon_web.png" alt="logo" class="w-full h-full object-contain">
+                <img src="{{ asset('images/icon_web.png') }}" alt="logo" class="w-full h-full object-contain">
             </div>
             <div class="flex flex-col">
                 <span class="font-extrabold text-sm text-white uppercase">Đại Học Hồ Chí
@@ -55,6 +55,12 @@
             class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition hover:bg-slate-800 hover:text-white text-slate-300 {{ request()->routeIs('admin.borrows.*') ? 'bg-blue-600 text-white' : 'text-slate-300' }}}}">
             <i class="fa-solid fa-arrows-rotate text-base w-5 text-center"></i>
             <span>Mượn / Trả Sách</span>
+        </a>
+
+        <a href="{{ route('admin.fines.index') }}"
+            class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition hover:bg-slate-800 hover:text-white text-slate-300 {{ request()->routeIs('admin.fines.*') ? 'bg-blue-600 text-white' : 'text-slate-300' }}}}">
+            <i class="fa-solid fa-triangle-exclamation text-base w-5 text-center"></i>
+            <span>Quản Lý Phạt</span>
         </a>
     </nav>
 

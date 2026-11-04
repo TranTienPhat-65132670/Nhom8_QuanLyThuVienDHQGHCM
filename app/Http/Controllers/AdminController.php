@@ -184,4 +184,122 @@ class AdminController extends Controller
 
         return redirect()->back()->with('success', 'Cập nhật trạng thái phiếu mượn thành công!');
     }
+
+    public function fineIndex(Request $request)
+    {
+        $query = DB::table('fine')->orderBy('fine_id', 'desc');
+
+        // Tìm kiếm theo tên hoặc mô tả (nếu có)
+        if ($request->has('keyword') && !empty($request->keyword)) {
+            $keyword = $request->keyword;
+            $query->where('fine_name', 'like', "%{$keyword}%")
+                ->orWhere('description', 'like', "%{$keyword}%");
+        }
+
+        // Phân trang 10 dòng / trang
+        $fines = $query->paginate(10)->withQueryString();
+
+        return view('admin.fines.index', compact('fines'));
+    }
+
+    // Hiển thị form thêm khoản phạt
+    public function fineCreate()
+    {
+        return view('admin.fines.create');
+    }
+
+    // Xử lý lưu khoản phạt mới (Có ràng buộc dữ liệu chặt chẽ)
+    public function fineStore(Request $request)
+    {
+        $request->validate([
+            'fine_name'   => 'required|string|max:255',
+            'fine_amount' => 'required|numeric|min:0',
+            'description' => 'nullable|string',
+        ], [
+            'fine_name.required'   => 'Vui lòng không để trống tên khoản phạt.',
+            'fine_name.string'     => 'Tên khoản phạt phải là chuỗi ký tự hợp lệ.',
+            'fine_name.max'        => 'Tên khoản phạt không được vượt quá 255 ký tự.',
+            'fine_amount.required' => 'Vui lòng không để trống số tiền phạt.',
+            'fine_amount.numeric'  => 'Số tiền phạt bắt buộc phải là dạng số.',
+            'fine_amount.min'      => 'Số tiền phạt không được là số âm (tối thiểu từ 0 trở lên).',
+        ]);
+
+        DB::table('fine')->insert([
+            'fine_name'   => $request->fine_name,
+            'fine_amount' => $request->fine_amount,
+            'description' => $request->description,
+            'created_at'  => now(),
+            'updated_at'  => now(),
+        ]);
+
+        return redirect()->route('admin.fines.index')->with('success', 'Thêm khoản phạt mới thành công!');
+    }
+
+    // Hiển thị form chỉnh sửa khoản phạt
+    public function fineEdit($id)
+    {
+        $fine = DB::table('fine')->where('fine_id', $id)->first();
+        if (!$fine) {
+            return redirect()->route('admin.fines.index')->with('error', 'Không tìm thấy khoản phạt này!');
+        }
+
+        return view('admin.fines.edit', compact('fine'));
+    }
+
+    // Xử lý cập nhật khoản phạt (Có ràng buộc dữ liệu chặt chẽ)
+    public function fineUpdate(Request $request, $id)
+    {
+        // Kiểm tra ràng buộc đầu vào
+        $request->validate([
+            'fine_name'   => 'required|string|max:255',
+            'fine_amount' => 'required|numeric|min:0',
+            'description' => 'nullable|string',
+        ], [
+            'fine_name.required'   => 'Vui lòng không để trống tên khoản phạt.',
+            'fine_name.string'     => 'Tên khoản phạt phải là chuỗi ký tự hợp lệ.',
+            'fine_name.max'        => 'Tên khoản phạt không được vượt quá 255 ký tự.',
+            'fine_amount.required' => 'Vui lòng không để trống số tiền phạt.',
+            'fine_amount.numeric'  => 'Số tiền phạt bắt buộc phải là dạng số.',
+            'fine_amount.min'      => 'Số tiền phạt không được là số âm (tối thiểu từ 0 trở lên).',
+        ]);
+
+        $fine = DB::table('fine')->where('fine_id', $id)->first();
+        if (!$fine) {
+            return redirect()->route('admin.fines.index')->with('error', 'Không tìm thấy khoản phạt này!');
+        }
+
+        // Thực hiện cập nhật vào database
+        DB::table('fine')->where('fine_id', $id)->update([
+            'fine_name'   => $request->fine_name,
+            'fine_amount' => $request->fine_amount,
+            'description' => $request->description,
+            'updated_at'  => now(),
+        ]);
+
+        return redirect()->route('admin.fines.index')->with('success', 'Cập nhật khoản phạt thành công!');
+    }
+
+    // Xóa khoản phạt (Có kiểm tra ràng buộc với bảng borrow_fine)
+    public function fineDestroy($id)
+    {
+        // 1. Kiểm tra xem khoản phạt có tồn tại trong database không
+        $fine = DB::table('fine')->where('fine_id', $id)->first();
+        if (!$fine) {
+            return redirect()->route('admin.fines.index')->with('error', 'Không tìm thấy khoản phạt này!');
+        }
+
+        // 2. RÀNG BUỘC: Kiểm tra xem fine_id này có đang được sử dụng trong bảng trung gian borrow_fine hay không
+        $isUsed = DB::table('borrow_fine')->where('fine_id', $id)->exists();
+
+        if ($isUsed) {
+            // Nếu đang được sử dụng -> Chặn xóa và thông báo lỗi
+            return redirect()->route('admin.fines.index')
+                ->with('error', 'Không thể xóa vì khoản phạt này đang được áp dụng trong phiếu mượn của độc giả!');
+        }
+
+        // 3. Nếu không bị ràng buộc -> Tiến hành xóa
+        DB::table('fine')->where('fine_id', $id)->delete();
+
+        return redirect()->route('admin.fines.index')->with('success', 'Xóa khoản phạt thành công!');
+    }
 }

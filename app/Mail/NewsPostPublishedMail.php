@@ -12,9 +12,7 @@ class NewsPostPublishedMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public function __construct(public object $post)
-    {
-    }
+    public function __construct(public object $post) {}
 
     public function envelope(): Envelope
     {

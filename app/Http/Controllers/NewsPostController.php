@@ -3,19 +3,22 @@
 namespace App\Http\Controllers;
 
 use App\Mail\NewsPostPublishedMail;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use RuntimeException;
 use Throwable;
 
 class NewsPostController extends Controller
 {
     public function index()
     {
-        $posts = DB::table('news_posts')
-            ->orderByDesc('published_at')
+        $posts = $this->postsQuery()
+            ->orderByDesc('post.created_at')
             ->paginate(10);
 
         return view('admin.news.index', compact('posts'));
@@ -36,27 +39,28 @@ class NewsPostController extends Controller
 
         $author = DB::table('user')
             ->where('user_id', session('user_id'))
-            ->first(['user_id', 'student_code']);
+            ->first(['user_id']);
 
-        if (!$author) {
-            abort(403, 'Không tìm thấy tài khoản người đăng.');
+        abort_unless($author, 403, 'Không tìm thấy tài khoản người đăng.');
+
+        $now = now();
+        $imagePath = $request->file('image')->store('news', 'public');
+        if ($imagePath === false) {
+            throw new RuntimeException('Không thể lưu ảnh bài viết.');
         }
 
-        $imagePath = $request->file('image')?->store('news', 'public');
-        $publishedAt = now();
-
-        $postId = DB::table('news_posts')->insertGetId([
+        $postId = DB::table('post')->insertGetId([
+            'user_id' => $author->user_id,
             'title' => $validated['title'],
-            'content' => $validated['content'],
+            'body' => $validated['content'],
             'image_path' => $imagePath,
-            'author_id' => (string) $author->user_id,
-            'author_name' => 'MSSV '.$author->student_code,
-            'published_at' => $publishedAt,
-            'created_at' => $publishedAt,
-            'updated_at' => $publishedAt,
-        ]);
+            'status' => 1,
+            'slug' => $this->uniqueSlug($validated['title']),
+            'created_at' => $now,
+            'updated_at' => $now,
+        ], 'post_id');
 
-        $post = DB::table('news_posts')->where('id', $postId)->first();
+        $post = $this->postsQuery()->where('post.post_id', $postId)->firstOrFail();
         $recipients = DB::table('user')
             ->where('role', 'member')
             ->whereNotNull('email')
@@ -92,16 +96,14 @@ class NewsPostController extends Controller
 
     public function edit(int $id)
     {
-        $post = DB::table('news_posts')->find($id);
-
-        abort_unless($post, 404);
+        $post = $this->postsQuery()->where('post.post_id', $id)->firstOrFail();
 
         return view('admin.news.form', compact('post'));
     }
 
     public function update(Request $request, int $id)
     {
-        $post = DB::table('news_posts')->find($id);
+        $post = DB::table('post')->where('post_id', $id)->first();
         abort_unless($post, 404);
 
         $validated = $request->validate([
@@ -113,12 +115,16 @@ class NewsPostController extends Controller
         $imagePath = $post->image_path;
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('news', 'public');
+            if ($imagePath === false) {
+                throw new RuntimeException('Không thể lưu ảnh bài viết.');
+            }
         }
 
-        DB::table('news_posts')->where('id', $id)->update([
+        DB::table('post')->where('post_id', $id)->update([
             'title' => $validated['title'],
-            'content' => $validated['content'],
+            'body' => $validated['content'],
             'image_path' => $imagePath,
+            'slug' => $this->uniqueSlug($validated['title'], $id),
             'updated_at' => now(),
         ]);
 
@@ -131,10 +137,10 @@ class NewsPostController extends Controller
 
     public function destroy(int $id)
     {
-        $post = DB::table('news_posts')->find($id);
+        $post = DB::table('post')->where('post_id', $id)->first();
         abort_unless($post, 404);
 
-        DB::table('news_posts')->where('id', $id)->delete();
+        DB::table('post')->where('post_id', $id)->delete();
 
         if ($post->image_path) {
             Storage::disk('public')->delete($post->image_path);
@@ -145,9 +151,9 @@ class NewsPostController extends Controller
 
     public function publicIndex()
     {
-        $posts = DB::table('news_posts')
-            ->whereNotNull('published_at')
-            ->orderByDesc('published_at')
+        $posts = $this->postsQuery()
+            ->where('post.status', 1)
+            ->orderByDesc('post.created_at')
             ->paginate(9);
 
         return view('news.index', compact('posts'));
@@ -155,13 +161,43 @@ class NewsPostController extends Controller
 
     public function show(int $id)
     {
-        $post = DB::table('news_posts')
-            ->where('id', $id)
-            ->whereNotNull('published_at')
+        $post = $this->postsQuery()
+            ->where('post.post_id', $id)
+            ->where('post.status', 1)
             ->first();
 
         abort_unless($post, 404);
 
         return view('news.show', compact('post'));
+    }
+
+    private function postsQuery(): Builder
+    {
+        return DB::table('post')
+            ->leftJoin('user', 'post.user_id', '=', 'user.user_id')
+            ->select([
+                'post.*',
+                'post.post_id as id',
+                'post.body as content',
+                'post.created_at as published_at',
+                'user.student_name as author_name',
+            ]);
+    }
+
+    private function uniqueSlug(string $title, ?int $exceptPostId = null): string
+    {
+        $base = Str::limit(Str::slug($title), 90, '');
+        $base = $base !== '' ? $base : 'tin-tuc';
+
+        do {
+            $slug = $base.'-'.Str::lower(Str::random(8));
+            $query = DB::table('post')->where('slug', $slug);
+
+            if ($exceptPostId !== null) {
+                $query->where('post_id', '<>', $exceptPostId);
+            }
+        } while ($query->exists());
+
+        return $slug;
     }
 }

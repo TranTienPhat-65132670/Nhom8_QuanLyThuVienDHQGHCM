@@ -5,11 +5,10 @@
     <div class="h-20 flex items-center justify-between px-5 bg-slate-950/60 border-b border-slate-800">
         <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-lg flex items-center justify-center overflow-hidden shadow-md bg-white p-1">
-                <img src="images/icon_web.png" alt="logo" class="w-full h-full object-contain">
+                <img src="{{ asset('images/icon_web.png') }}" alt="logo" class="w-full h-full object-contain">
             </div>
             <div class="flex flex-col">
-                <span class="font-extrabold text-sm text-white uppercase">Đại Học Hồ Chí
-                    Minh</span>
+                <span class="font-extrabold text-sm text-white uppercase">Đại Học Hồ Chí Minh</span>
                 <span class="text-[11px] text-slate-400 font-medium tracking-wider">Hệ Thống Thư Viện</span>
             </div>
         </div>
@@ -23,17 +22,24 @@
     <nav class="flex-1 px-3 py-5 space-y-1 overflow-y-auto">
         <div class="px-3 pb-2 text-[11px] font-bold uppercase tracking-wider text-slate-500">Tổng Quan</div>
 
-        <a href="#"
-            class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold bg-blue-600 text-white shadow-lg shadow-blue-600/30">
+        <a href="{{ route('admin_index') }}"
+            class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition {{ request()->routeIs('admin_index') ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/30' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
             <i class="fa-solid fa-chart-pie text-base w-5 text-center"></i>
             <span>Dashboard</span>
         </a>
 
-        <div class="pt-5 px-3 pb-2 text-[11px] font-bold uppercase tracking-wider text-slate-500">Nghiệp Vụ Thư Viện
-        </div>
+        <div class="pt-5 px-3 pb-2 text-[11px] font-bold uppercase tracking-wider text-slate-500">Nghiệp Vụ Thư Viện</div>
 
-        <a href="#"
-            class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition hover:bg-slate-800 hover:text-white text-slate-300">
+        <!-- Quản Lý Danh Mục -->
+        <a href="{{ route('categories.index') }}"
+            class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition hover:bg-slate-800 hover:text-white {{ request()->routeIs('categories.*') ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/30' : 'text-slate-300' }}">
+            <i class="fa-solid fa-layer-group text-base w-5 text-center"></i>
+            <span>Quản Lý Danh Mục</span>
+        </a>
+
+        <!-- Quản Lý Sách -->
+        <a href="{{ route('books.index') }}"
+            class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition hover:bg-slate-800 hover:text-white {{ request()->routeIs('books.*') ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/30' : 'text-slate-300' }}">
             <i class="fa-solid fa-book-bookmark text-base w-5 text-center"></i>
             <span>Quản Lý Học Liệu & Sách</span>
         </a>
@@ -44,8 +50,9 @@
             <span>Mượn / Trả Sách</span>
         </a>
 
-        <a href="#"
-            class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition hover:bg-slate-800 hover:text-white text-slate-300">
+        <!-- Quản lý Sinh Viên & Độc Giả -->
+        <a href="{{ route('admin.users.index') }}"
+            class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition hover:bg-slate-800 hover:text-white {{ request()->routeIs('admin.users.*') ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/30' : 'text-slate-300' }}">
             <i class="fa-solid fa-user-graduate text-base w-5 text-center"></i>
             <span>Sinh Viên & Độc Giả</span>
         </a>
@@ -58,23 +65,13 @@
             <span>Báo Cáo Thống Kê</span>
         </a>
 
-        <!-- Quản Lý Danh Mục -->
-        <a href="{{ route('categories.index') }}"
-            class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition hover:bg-slate-800 hover:text-white {{ request()->routeIs('categories.*') ? 'bg-blue-600 text-white' : 'text-slate-300' }}">
-            <i class="fa-solid fa-layer-group text-base w-5 text-center"></i>
-            <span>Quản Lý Danh Mục</span>
-        </a>
-        <!-- Quản Lý Sách -->
-        <a href="{{ route('books.index') }}"
-            class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition hover:bg-slate-800 hover:text-white {{ request()->routeIs('books.*') ? 'bg-blue-600 text-white' : 'text-slate-300' }}">
-            <i class="fa-solid fa-book-bookmark text-base w-5 text-center"></i>
-            <span>Quản Lý Học Liệu & Sách</span>
-        </a>
-        <a href="{{ route('client.books.index') }}" target="_blank" 
-            class="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-xl transition flex items-center gap-1.5">
-            <i class="fa-solid fa-arrow-up-right-from-square"></i>
-            <span>Xem trang Độc giả</span>
-        </a>
+        <div class="pt-4">
+            <a href="{{ route('client.books.index') }}"
+                class="px-3.5 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-xl transition flex items-center justify-center gap-2 border border-slate-700">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                <span>Xem trang Độc giả</span>
+            </a>
+        </div>
     </nav>
 
     <!-- Footer Sidebar -->

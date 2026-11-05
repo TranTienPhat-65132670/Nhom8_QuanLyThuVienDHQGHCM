@@ -5,7 +5,7 @@
     <div class="h-20 flex items-center justify-between px-5 bg-slate-950/60 border-b border-slate-800">
         <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-lg flex items-center justify-center overflow-hidden shadow-md bg-white p-1">
-                <img src="images/icon_web.png" alt="logo" class="w-full h-full object-contain">
+                <img src="{{ asset('images/icon_web.png') }}" alt="logo" class="w-full h-full object-contain">
             </div>
             <div class="flex flex-col">
                 <span class="font-extrabold text-sm text-white uppercase">Đại Học Hồ Chí
@@ -28,8 +28,11 @@
             <span>Dashboard</span>
         </a>
 
-        <div class="pt-5 px-3 pb-2 text-[11px] font-bold uppercase tracking-wider text-slate-500">Nghiệp Vụ Thư Viện
-        </div>
+        <a href="{{ route('admin.news.index') }}"
+            class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition hover:bg-slate-800 hover:text-white text-slate-300 {{ request()->routeIs('admin.news.*') ? 'bg-blue-600 text-white' : 'text-slate-300' }}">
+            <i class="fa-solid fa-newspaper text-base w-5 text-center"></i>
+            <span>Quản Lý Tin Tức</span>
+        </a>
 
         <a href="#"
             class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition hover:bg-slate-800 hover:text-white text-slate-300">
@@ -37,28 +40,12 @@
             <span>Sinh Viên & Độc Giả</span>
         </a>
 
-        <a href="{{ route('admin.news.index') }}"
-            class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition hover:bg-slate-800 hover:text-white text-slate-300">
-            <i class="fa-solid fa-newspaper text-base w-5 text-center"></i>
-            <span>Quản Lý Tin Tức</span>
-        </a>
-
-        <div class="pt-5 px-3 pb-2 text-[11px] font-bold uppercase tracking-wider text-slate-500">Hệ Thống</div>
-
-        <a href="#"
-            class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition hover:bg-slate-800 hover:text-white text-slate-300">
-            <i class="fa-solid fa-chart-line text-base w-5 text-center"></i>
-            <span>Báo Cáo Thống Kê</span>
-        </a>
-
-        <!-- Quản Lý Danh Mục -->
         <a href="{{ route('categories.index') }}"
             class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition hover:bg-slate-800 hover:text-white {{ request()->routeIs('categories.*') ? 'bg-blue-600 text-white' : 'text-slate-300' }}">
             <i class="fa-solid fa-layer-group text-base w-5 text-center"></i>
             <span>Quản Lý Danh Mục</span>
         </a>
 
-        <!-- Quản Lý Sách -->
         <a href="{{ route('books.index') }}"
             class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition hover:bg-slate-800 hover:text-white {{ request()->routeIs('books.*') ? 'bg-blue-600 text-white' : 'text-slate-300' }}">
             <i class="fa-solid fa-book-bookmark text-base w-5 text-center"></i>

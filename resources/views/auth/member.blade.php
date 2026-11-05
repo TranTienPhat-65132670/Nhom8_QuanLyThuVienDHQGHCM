@@ -209,7 +209,7 @@
                             </div>
                             <div class="flex justify-between py-1.5">
                                 <span class="text-slate-400">Sách đang giữ:</span>
-                                <span class="text-amber-400 font-bold">0 quyển</span>
+                                <span class="text-amber-400 font-bold">{{ $borrowedBooksCount ?? 0 }} quyển</span>
                             </div>
                         </div>
                     @else

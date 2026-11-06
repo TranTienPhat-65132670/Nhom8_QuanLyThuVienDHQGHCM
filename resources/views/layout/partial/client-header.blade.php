@@ -92,8 +92,8 @@
                         @endif
 
                         <!-- 1. Trang thông tin cá nhân -->
-                        <a href="#"
-                            class="flex items-center gap-2.5 px-4 py-2.5 hover:bg-teal-50 hover:text-teal-700 transition">
+                        <a href="{{ route('client.profile.index') }}"
+                            class="flex items-center gap-2.5 px-4 py-2.5 hover:bg-teal-50 hover:text-teal-700 transition {{ request()->routeIs('client.profile.*') ? 'bg-teal-50 text-teal-700' : '' }}">
                             <i class="fa-regular fa-id-card text-teal-600 w-4 text-center"></i> Trang thông tin cá nhân
                         </a>
 
@@ -165,11 +165,14 @@
                     {{ $currentUser->role === 'admin' ? 'Quản Trị Viên' : 'Độc Giả' }}
                 </div>
 
+                <!-- Trang thông tin cá nhân & Yêu thích (Mobile) -->
                 <div class="space-y-1 pt-2 border-t border-slate-200 text-xs font-semibold">
-                    <a href="#" class="block p-2 rounded-lg hover:bg-teal-50 hover:text-teal-700">Trang thông tin
-                        cá nhân</a>
-                    <a href="#" class="block p-2 rounded-lg hover:bg-rose-50 hover:text-rose-600">Trang yêu
-                        thích</a>
+                    <a href="{{ route('client.profile.index') }}" class="block p-2 rounded-lg hover:bg-teal-50 hover:text-teal-700 {{ request()->routeIs('client.profile.*') ? 'bg-teal-50 text-teal-700' : '' }}">
+                        Trang thông tin cá nhân
+                    </a>
+                    <a href="{{ route('client.books.favorites') }}" class="block p-2 rounded-lg hover:bg-rose-50 hover:text-rose-600">
+                        Trang yêu thích
+                    </a>
                 </div>
 
                 <form action="{{ route('logout') }}" method="POST" class="pt-2">

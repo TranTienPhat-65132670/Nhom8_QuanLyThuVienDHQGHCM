@@ -30,6 +30,20 @@
 
         <div class="pt-5 px-3 pb-2 text-[11px] font-bold uppercase tracking-wider text-slate-500">Nghiệp Vụ Thư Viện</div>
 
+        <!-- Quản Lý Tin Tức -->
+        <a href="{{ route('admin.news.index') }}"
+            class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition hover:bg-slate-800 hover:text-white text-slate-300 {{ request()->routeIs('admin.news.*') ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/30' : 'text-slate-300' }}">
+            <i class="fa-solid fa-newspaper text-base w-5 text-center"></i>
+            <span>Quản Lý Tin Tức</span>
+        </a>
+
+        <!-- Quản lý Sinh Viên & Độc Giả -->
+        <a href="{{ route('admin.users.index') }}"
+            class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition hover:bg-slate-800 hover:text-white text-slate-300 {{ request()->routeIs('admin.users.*') ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/30' : 'text-slate-300' }}">
+            <i class="fa-solid fa-user-graduate text-base w-5 text-center"></i>
+            <span>Sinh Viên & Độc Giả</span>
+        </a>
+
         <!-- Quản Lý Danh Mục -->
         <a href="{{ route('categories.index') }}"
             class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition hover:bg-slate-800 hover:text-white {{ request()->routeIs('categories.*') ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/30' : 'text-slate-300' }}">
@@ -41,31 +55,19 @@
         <a href="{{ route('books.index') }}"
             class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition hover:bg-slate-800 hover:text-white {{ request()->routeIs('books.*') ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/30' : 'text-slate-300' }}">
             <i class="fa-solid fa-book-bookmark text-base w-5 text-center"></i>
-            <span>Quản Lý Học Liệu & Sách</span>
+            <span>Quản Lý Sách</span>
         </a>
 
-        <a href="#"
-            class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition hover:bg-slate-800 hover:text-white text-slate-300">
+        <!-- Mượn / Trả Sách -->
+        <a href="{{ route('admin.borrows.index') }}"
+            class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition hover:bg-slate-800 hover:text-white text-slate-300 {{ request()->routeIs('admin.borrows.*') ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/30' : 'text-slate-300' }}">
             <i class="fa-solid fa-arrows-rotate text-base w-5 text-center"></i>
             <span>Mượn / Trả Sách</span>
         </a>
 
-        <!-- Quản lý Sinh Viên & Độc Giả -->
-        <a href="{{ route('admin.users.index') }}"
-            class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition hover:bg-slate-800 hover:text-white {{ request()->routeIs('admin.users.*') ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/30' : 'text-slate-300' }}">
-            <i class="fa-solid fa-user-graduate text-base w-5 text-center"></i>
-            <span>Sinh Viên & Độc Giả</span>
-        </a>
-
         <div class="pt-5 px-3 pb-2 text-[11px] font-bold uppercase tracking-wider text-slate-500">Hệ Thống</div>
 
-        <a href="#"
-            class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition hover:bg-slate-800 hover:text-white text-slate-300">
-            <i class="fa-solid fa-chart-line text-base w-5 text-center"></i>
-            <span>Báo Cáo Thống Kê</span>
-        </a>
-
-        <div class="pt-4">
+        <div class="pt-2">
             <a href="{{ route('client.books.index') }}"
                 class="px-3.5 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-xl transition flex items-center justify-center gap-2 border border-slate-700">
                 <i class="fa-solid fa-arrow-up-right-from-square"></i>

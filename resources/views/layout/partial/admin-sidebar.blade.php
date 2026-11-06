@@ -65,6 +65,11 @@
             <span>Mượn / Trả Sách</span>
         </a>
 
+        <a href="{{ route('admin.fines.index') }}"
+            class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition hover:bg-slate-800 hover:text-white text-slate-300 {{ request()->routeIs('admin.fines.*') ? 'bg-blue-600 text-white' : 'text-slate-300' }}}}">
+            <i class="fa-solid fa-triangle-exclamation text-base w-5 text-center"></i>
+            <span>Quản Lý Phạt</span>
+        </a>
         <div class="pt-5 px-3 pb-2 text-[11px] font-bold uppercase tracking-wider text-slate-500">Hệ Thống</div>
 
         <div class="pt-2">

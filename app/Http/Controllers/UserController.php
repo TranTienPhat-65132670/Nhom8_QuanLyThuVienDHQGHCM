@@ -22,9 +22,9 @@ class UserController extends Controller
 
             $query->where(function ($q) use ($kw, $kwCode) {
                 $q->where('student_code', 'LIKE', "%{$kwCode}%")
-                  ->orWhere('student_name', 'LIKE', "%{$kw}%")
-                  ->orWhere('email', 'LIKE', "%{$kw}%")
-                  ->orWhere('phone', 'LIKE', "%{$kw}%");
+                    ->orWhere('student_name', 'LIKE', "%{$kw}%")
+                    ->orWhere('email', 'LIKE', "%{$kw}%")
+                    ->orWhere('phone', 'LIKE', "%{$kw}%");
             });
         }
 
@@ -68,8 +68,12 @@ class UserController extends Controller
             'role'         => ['required', 'in:admin,member'],
             'password'     => ['required', 'string', 'min:8', 'regex:/[A-Z]/', 'regex:/\d/'],
         ], [
+            'student_code.numeric' => "Mã số sinh viên phải là số",
             'student_code.required' => 'Mã số không được bỏ trống!',
             'student_code.unique'   => 'Mã số sinh viên này đã tồn tại!',
+            'password.required' => "Không được bỏ trống!",
+            'student_name.required' => "Không được bỏ trống!",
+            'email.required' => "Không được bỏ trống!",
             'email.unique'          => 'Email này đã tồn tại trong hệ thống!',
             'phone.unique'          => 'Số điện thoại này đã tồn tại!',
             'password.regex'        => 'Mật khẩu phải có ít nhất 8 ký tự, gồm 1 chữ hoa và 1 chữ số!',

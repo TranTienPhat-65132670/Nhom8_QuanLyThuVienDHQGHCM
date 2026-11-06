@@ -1,9 +1,9 @@
 <?php
 
-use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BorrowController;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\NewsPostController;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', [ClientController::class, 'index'])->name('client.index');
 
@@ -16,6 +16,8 @@ Route::get('/sach/{slug}', [ClientController::class, 'showBook'])->name('client.
 Route::get('/rule', [ClientController::class, 'rule'])->name('rule');
 Route::get('/guide', [ClientController::class, 'guide'])->name('guide');
 
+Route::get('/tin-tuc', [NewsPostController::class, 'publicIndex'])->name('news.index');
+Route::get('/tin-tuc/{id}', [NewsPostController::class, 'show'])->name('news.show');
 
 // route cần đăng nhập
 Route::middleware(['check.login'])->group(function () {

@@ -30,15 +30,8 @@ class ProfileController extends Controller
             ->orderBy('reservation_date', 'desc')
             ->get();
 
-        $unpaidFines = DB::table('borrow_fine')
-            ->join('borrow', 'borrow_fine.borrow_id', '=', 'borrow.borrow_id')
-            ->join('fine', 'borrow_fine.fine_id', '=', 'fine.fine_id')
-            ->where('borrow.user_id', $userId)
-            ->where('borrow_fine.status', 0)
-            ->select('borrow_fine.*', 'fine.fine_name', 'fine.fine_amount', 'borrow.borrow_datetime')
-            ->get();
 
-        return view('client.profile.index', compact('user', 'borrowHistory', 'reservations', 'unpaidFines'));
+        return view('client.profile.index', compact('user', 'borrowHistory', 'reservations'));
     }
 
     // Cập nhật thông tin cá nhân (Họ tên, Email, SĐT)

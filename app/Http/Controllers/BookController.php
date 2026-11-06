@@ -10,7 +10,7 @@ use Illuminate\Validation\Rule;
 
 class BookController extends Controller
 {
-    // Danh sách sách Admin
+    // trang chủ sách của admin
     public function index(Request $request)
     {
         $query = Book::with('category')->orderBy('book_id', 'desc');
@@ -19,8 +19,8 @@ class BookController extends Controller
             $keyword = $request->keyword;
             $query->where(function ($q) use ($keyword) {
                 $q->where('book_name', 'LIKE', "%{$keyword}%")
-                  ->orWhere('author', 'LIKE', "%{$keyword}%")
-                  ->orWhere('isbn', 'LIKE', "%{$keyword}%");
+                    ->orWhere('author', 'LIKE', "%{$keyword}%")
+                    ->orWhere('isbn', 'LIKE', "%{$keyword}%");
             });
         }
 
@@ -49,10 +49,10 @@ class BookController extends Controller
             'category_id'    => ['required', 'integer', Rule::exists('category', 'category_id')->whereNull('deleted_at')],
             'author'         => ['required', 'string', 'max:255'],
             'isbn'           => [
-                'required', 
-                'string', 
-                'max:50', 
-                'regex:/^(?=(?:\D*\d){10}(?:(?:\D*\d){3})?$)[\d-]+$/', 
+                'required',
+                'string',
+                'max:50',
+                'regex:/^(?=(?:\D*\d){10}(?:(?:\D*\d){3})?$)[\d-]+$/',
                 Rule::unique('book', 'isbn')->whereNull('deleted_at')
             ],
             'total_quantity' => ['required', 'integer', 'min:10'],
@@ -152,10 +152,10 @@ class BookController extends Controller
             'category_id'    => ['required', 'integer', Rule::exists('category', 'category_id')->whereNull('deleted_at')],
             'author'         => ['required', 'string', 'max:255'],
             'isbn'           => [
-                'required', 
-                'string', 
-                'max:50', 
-                'regex:/^(?=(?:\D*\d){10}(?:(?:\D*\d){3})?$)[\d-]+$/', 
+                'required',
+                'string',
+                'max:50',
+                'regex:/^(?=(?:\D*\d){10}(?:(?:\D*\d){3})?$)[\d-]+$/',
                 Rule::unique('book', 'isbn')->ignore($id, 'book_id')->whereNull('deleted_at')
             ],
             'total_quantity' => ['required', 'integer', 'min:' . $minAllowedQuantity],
@@ -176,9 +176,9 @@ class BookController extends Controller
             'category_id.exists'      => 'Danh mục không hợp lệ hoặc đã bị xóa!',
             'total_quantity.required' => 'Tổng số lượng sách không được bỏ trống!',
             'total_quantity.integer'  => 'Tổng số lượng sách phải là số nguyên!',
-            'total_quantity.min'      => $borrowedQuantity > 10 
-                                         ? "Tổng số lượng không được nhỏ hơn {$borrowedQuantity} (số lượng đang có người mượn)!"
-                                         : 'Tổng số lượng sách phải từ 10 cuốn trở lên!',
+            'total_quantity.min'      => $borrowedQuantity > 10
+                ? "Tổng số lượng không được nhỏ hơn {$borrowedQuantity} (số lượng đang có người mượn)!"
+                : 'Tổng số lượng sách phải từ 10 cuốn trở lên!',
             'page_count.integer'      => 'Số trang phải là số nguyên!',
             'page_count.min'          => 'Số trang phải lớn hơn 0!',
             'location.required'       => 'Vui lòng chọn khu vực thư viện!',
@@ -229,21 +229,30 @@ class BookController extends Controller
             'slug'               => $slug,
         ]);
 
+        if ($newAvailable > $oldAvailable) {
+            $reservationController = new \App\Http\Controllers\ReservationController();
+            $reservationController->notifyUsersWhenBookAvailable($book->book_id);
+        }
+
         return redirect()->route('books.index')->with('success', 'Cập nhật thông tin sách thành công!');
     }
 
     // Xóa mềm sách
-    public function destroy($id)
+    public function toggleStatus($id)
     {
         $book = Book::findOrFail($id);
 
-        $borrowedQuantity = $book->total_quantity - $book->available_quantity;
+        // Đảo ngược trạng thái: nếu đang là 1 (hoạt động) thì chuyển thành 0 (khóa), và ngược lại
+        $newStatus = $book->status == 1 ? 0 : 1;
 
-        if ($borrowedQuantity > 0) {
-            return back()->with('error', "Không thể xóa sách này vì hiện đang có {$borrowedQuantity} cuốn đang được sinh viên mượn!");
-        }
+        $book->update([
+            'status' => $newStatus
+        ]);
 
-        $book->delete();
-        return redirect()->route('books.index')->with('success', 'Đã chuyển sách vào thùng rác thành công!');
+        $message = $newStatus == 1
+            ? 'Đã mở khóa, sách có thể được mượn bình thường!'
+            : 'Đã khóa sách, sách tạm ngưng cho mượn thành công!';
+
+        return redirect()->route('books.index')->with('success', $message);
     }
 }

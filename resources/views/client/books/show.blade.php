@@ -83,16 +83,31 @@
                                 <i class="fa-solid fa-bookmark"></i> Đặt Mượn Sách
                             </button>
                         </form>
-                        {{-- <button type="button" data-book-id="{{ $book->book_id }}"
-                            class="btn-borrow px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl shadow-xs transition flex items-center gap-2 cursor-pointer">
-                            <i class="fa-solid fa-bookmark"></i> Đặt Mượn Sách
-                        </button> --}}
                     @else
-                        <button disabled
-                            class="px-5 py-2.5 bg-slate-200 text-slate-400 text-xs font-bold rounded-xl cursor-not-allowed">
-                            Hết Sách Trực Tiếp
-                        </button>
+                        {{-- Kiểm tra xem user hiện tại đã đặt trước cuốn sách này chưa --}}
+                        @php
+                            $isReserved = DB::table('book_reservation')
+                                ->where('user_id', session('user_id'))
+                                ->where('book_id', $book->book_id)
+                                ->exists();
+                        @endphp
+
+                        @if ($isReserved)
+                            <button disabled
+                                class="px-5 py-2.5 bg-amber-100 text-amber-700 border border-amber-200 text-xs font-bold rounded-xl cursor-not-allowed flex items-center gap-2">
+                                <i class="fa-solid fa-check"></i> Đã Đặt Trước
+                            </button>
+                        @else
+                            <form action="{{ route('reservations.store', $book->book_id) }}" method="POST">
+                                @csrf
+                                <button type="submit"
+                                    class="px-5 py-2.5 bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold rounded-xl shadow-xs transition flex items-center gap-2 cursor-pointer">
+                                    <i class="fa-regular fa-clock"></i> Đặt Trước Sách
+                                </button>
+                            </form>
+                        @endif
                     @endif
+
                     <form action="{{ route('client.books.favorite', $book->book_id) }}" method="POST">
                         @csrf
                         @php

@@ -112,11 +112,17 @@ class BorrowController extends Controller
                 'book_id'    => $bookId,
                 'quantity'   => $qty,
             ];
+
+            // xóa đặt trước
+            DB::table('book_reservation')
+                ->where('user_id', $userId)
+                ->where('book_id', $bookId)
+                ->delete();
         }
 
         DB::table('borrow_details')->insert($detailsData);
 
-        return redirect()->route('client.books.favorites')
+        return redirect()->route('client.borrow.index')
             ->with('success', 'Đã tạo phiếu mượn thành công! Vui lòng chờ nhân viên duyệt.');
     }
 

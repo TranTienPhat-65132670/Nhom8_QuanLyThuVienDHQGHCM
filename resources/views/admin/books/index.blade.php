@@ -77,8 +77,8 @@
                         class="bg-slate-50 border-b border-slate-200 text-xs font-semibold text-slate-600 uppercase tracking-wider">
                         <th class="p-4 w-20 text-center">Bìa</th>
                         <th class="p-4">Tên Sách</th>
-                        <th class="p-4 text-center w-36">Số Lượng</th>
-                        <th class="p-4 text-center w-36">Trạng Thái</th>
+                        <th class="p-4 text-center w-36">Số Lượng (Khả dụng / Tổng)</th>
+                        <th class="p-4 text-center w-36">Trạng Thái Khoá</th>
                         <th class="p-4 text-right w-36">Thao Tác</th>
                     </tr>
                 </thead>
@@ -103,24 +103,25 @@
                                 <span class="text-slate-400 text-[11px] block mt-0.5">Mã ISBN: {{ $book->isbn }}</span>
                             </td>
 
+                            <!-- Cột số lượng: hiển thị Khả dụng / Tổng số lượng -->
                             <td class="p-4 text-center">
                                 <span class="font-bold text-emerald-600">{{ $book->available_quantity }}</span> /
-                                <span class="text-slate-500">{{ $book->total_quantity }}</span>
+                                <span
+                                    class="font-semibold text-slate-500">{{ $book->total_quantity ?? $book->available_quantity }}</span>
                             </td>
 
+                            <!-- Cột trạng thái: hiển thị Được mượn hoặc Đang bị khóa mượn -->
                             <td class="p-4 text-center">
-                                @if ($book->status == 0)
+                                @if ($book->status == 1)
                                     <span
-                                        class="px-2.5 py-1 bg-rose-100 text-rose-800 rounded-full text-[10px] font-bold">Tạm
-                                        Ngưng</span>
-                                @elseif($book->available_quantity > 0)
-                                    <span
-                                        class="px-2.5 py-1 bg-emerald-100 text-emerald-800 rounded-full text-[10px] font-bold">Còn
-                                        Sách</span>
+                                        class="px-2.5 py-1 bg-emerald-100 text-emerald-800 rounded-full text-[10px] font-bold inline-flex items-center gap-1">
+                                        <i class="fa-solid fa-circle-check text-[9px]"></i> Được mượn
+                                    </span>
                                 @else
                                     <span
-                                        class="px-2.5 py-1 bg-amber-100 text-amber-800 rounded-full text-[10px] font-bold">Hết
-                                        Sách</span>
+                                        class="px-2.5 py-1 bg-rose-100 text-rose-800 rounded-full text-[10px] font-bold inline-flex items-center gap-1">
+                                        <i class="fa-solid fa-lock text-[9px]"></i> Đang khóa
+                                    </span>
                                 @endif
                             </td>
 
@@ -137,14 +138,21 @@
                                     title="Sửa">
                                     <i class="fa-solid fa-pen-to-square"></i>
                                 </a>
-                                <form action="{{ route('books.destroy', $book->book_id) }}" method="POST" class="inline"
-                                    onsubmit="return confirm('Bạn có chắc chắn muốn xóa cuốn sách này?')">
+
+                                <!-- Nút Khóa / Mở khóa mượn sách -->
+                                <form action="{{ route('books.toggle-status', $book->book_id) }}" method="POST"
+                                    class="inline"
+                                    onsubmit="return confirm('Bạn có chắc chắn muốn {{ $book->status == 0 ? 'mở khóa cho phép mượn' : 'khóa không cho mượn' }} cuốn sách này?')">
                                     @csrf
-                                    @method('DELETE')
+                                    @method('PATCH')
                                     <button type="submit"
-                                        class="p-2 hover:bg-rose-50 text-rose-600 rounded-lg transition cursor-pointer"
-                                        title="Xóa">
-                                        <i class="fa-solid fa-trash-can"></i>
+                                        class="p-2 {{ $book->status == 0 ? 'hover:bg-emerald-50 text-emerald-600' : 'hover:bg-rose-50 text-rose-600' }} rounded-lg transition cursor-pointer"
+                                        title="{{ $book->status == 0 ? 'Mở khóa mượn sách' : 'Khóa không cho mượn' }}">
+                                        @if ($book->status == 0)
+                                            <i class="fa-solid fa-lock-open"></i>
+                                        @else
+                                            <i class="fa-solid fa-lock"></i>
+                                        @endif
                                     </button>
                                 </form>
                             </td>

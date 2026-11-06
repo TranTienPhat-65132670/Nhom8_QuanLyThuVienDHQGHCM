@@ -65,3 +65,10 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 - Chọn thông báo trên trang chủ để xem thời điểm đăng, tiêu đề và nội dung đầy đủ; danh sách tin tức sắp xếp mới nhất trước, lọc theo khoảng ngày và phân trang 10 bài.
 - Form admin bắt buộc có tiêu đề và nội dung; nếu thiếu, hệ thống báo lỗi bằng tiếng Việt.
 - Admin quản lý bài viết tại `/admin/tin-tuc`; độc giả xem tin tại `/tin-tuc`.
+
+## Module tài khoản và hồ sơ độc giả
+
+- Quản lý danh sách tài khoản độc giả và quản trị viên tại `/admin/users` với đầy đủ tính năng tìm kiếm, phân quyền và khóa/mở khóa thẻ thư viện.
+- Tự động nhận diện và xử lý tiền tố MSSV ĐHQG-HCM (`15000`) khi đăng nhập, tìm kiếm và tạo tài khoản.
+- Độc giả theo dõi thông tin thẻ thư viện điện tử, lịch sử mượn sách, sách đặt trước và đổi mật khẩu bảo mật tại `/ho-so`.
+

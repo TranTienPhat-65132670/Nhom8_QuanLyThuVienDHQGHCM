@@ -62,7 +62,7 @@
                 <!-- Mô tả chi tiết -->
                 <div>
                     <label class="block text-xs font-bold text-gray-700 uppercase mb-1.5">
-                        Mô tả chi tiết quy định
+                        Quy định
                     </label>
                     <textarea name="description" rows="4" placeholder="Nhập chi tiết điều khoản áp dụng mức phạt này..."
                         class="w-full px-4 py-3 text-sm border border-gray-200 rounded-xl focus:outline-none focus:border-rose-500 transition">{{ old('description') }}</textarea>

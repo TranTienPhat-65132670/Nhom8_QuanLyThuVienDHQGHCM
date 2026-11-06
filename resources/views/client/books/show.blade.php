@@ -76,21 +76,23 @@
                             <i class="fa-solid fa-ban mr-1"></i> Sách Tạm Ngưng Phục Vụ
                         </button>
                     @elseif($book->available_quantity > 0)
-                        <button type="button" data-book-id="{{ $book->book_id }}"
+                        <form action="{{ route('client.borrow.quickCreate', $book->book_id) }}" method="POST">
+                            @csrf
+                            <button type="submit"
+                                class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl shadow-xs transition flex items-center gap-2 cursor-pointer">
+                                <i class="fa-solid fa-bookmark"></i> Đặt Mượn Sách
+                            </button>
+                        </form>
+                        {{-- <button type="button" data-book-id="{{ $book->book_id }}"
                             class="btn-borrow px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl shadow-xs transition flex items-center gap-2 cursor-pointer">
                             <i class="fa-solid fa-bookmark"></i> Đặt Mượn Sách
-                        </button>
+                        </button> --}}
                     @else
                         <button disabled
                             class="px-5 py-2.5 bg-slate-200 text-slate-400 text-xs font-bold rounded-xl cursor-not-allowed">
                             Hết Sách Trực Tiếp
                         </button>
                     @endif
-
-                    {{-- <button type="button" data-book-id="{{ $book->book_id }}" 
-                        class="btn-favorite px-4 py-2.5 bg-rose-50 hover:bg-rose-100 text-rose-600 text-xs font-bold rounded-xl transition flex items-center gap-2 cursor-pointer">
-                    <i class="fa-regular fa-heart"></i> Yêu Thích
-                </button> --}}
                     <form action="{{ route('client.books.favorite', $book->book_id) }}" method="POST">
                         @csrf
                         @php

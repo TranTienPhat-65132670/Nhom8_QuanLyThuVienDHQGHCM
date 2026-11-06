@@ -21,6 +21,20 @@ class ClientController extends Controller
 
     public function index()
     {
+        $currentUser = null;
+        $borrowedBooksCount = 0;
+
+        if (session()->has('user_id')) {
+            $currentUser = DB::table('user')->where('user_id', session('user_id'))->first();
+
+            if ($currentUser) {
+                $borrowedBooksCount = DB::table('borrow')
+                    ->join('borrow_details', 'borrow.borrow_id', '=', 'borrow_details.borrow_id')
+                    ->where('borrow.user_id', $currentUser->user_id)
+                    ->whereIn('borrow.status', ['borrowing', 'overdue'])
+                    ->sum('borrow_details.quantity');
+            }
+        }
 
         $latestBooks = Book::with('category')
             ->orderBy('book_id', 'desc')
@@ -28,12 +42,12 @@ class ClientController extends Controller
             ->get();
         $latestPosts = DB::table('post')
             ->where('status', 1)
-            ->where('created_at', '>=', now()->subMonth()) // lấy thông báo mới nhất (1 tháng đổ lại)
+            ->where('created_at', '>=', now()->subMonth())
             ->orderByDesc('created_at')
             ->take(5)
             ->get();
 
-        return view('auth.member', compact('latestBooks', 'latestPosts'));
+        return view('auth.member', compact('latestBooks', 'latestPosts', 'currentUser', 'borrowedBooksCount'));
     }
 
     // 1. Trang danh sách và Tra cứu sách

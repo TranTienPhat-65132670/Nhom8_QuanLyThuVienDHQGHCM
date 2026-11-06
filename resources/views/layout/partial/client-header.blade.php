@@ -109,6 +109,13 @@
                             <i class="fa-solid fa-receipt text-sky-500 w-4 text-center"></i> Phiếu mượn của tôi
                         </a>
 
+
+                        <!-- 4. Sách Đặt Trước -->
+                        <a href="{{ route('client.reservations.index') }}"
+                            class="flex items-center gap-2.5 px-4 py-2.5 hover:bg-sky-50 hover:text-sky-600 transition">
+                            <i class="fa-regular fa-clock text-sky-500 w-4 text-center"></i> Sách đặt trước
+                        </a>
+
                         <div class="h-px bg-slate-100 my-1"></div>
 
                         <!-- 3. Nút đăng xuất -->
@@ -167,10 +174,12 @@
 
                 <!-- Trang thông tin cá nhân & Yêu thích (Mobile) -->
                 <div class="space-y-1 pt-2 border-t border-slate-200 text-xs font-semibold">
-                    <a href="{{ route('client.profile.index') }}" class="block p-2 rounded-lg hover:bg-teal-50 hover:text-teal-700 {{ request()->routeIs('client.profile.*') ? 'bg-teal-50 text-teal-700' : '' }}">
+                    <a href="{{ route('client.profile.index') }}"
+                        class="block p-2 rounded-lg hover:bg-teal-50 hover:text-teal-700 {{ request()->routeIs('client.profile.*') ? 'bg-teal-50 text-teal-700' : '' }}">
                         Trang thông tin cá nhân
                     </a>
-                    <a href="{{ route('client.books.favorites') }}" class="block p-2 rounded-lg hover:bg-rose-50 hover:text-rose-600">
+                    <a href="{{ route('client.books.favorites') }}"
+                        class="block p-2 rounded-lg hover:bg-rose-50 hover:text-rose-600">
                         Trang yêu thích
                     </a>
                 </div>

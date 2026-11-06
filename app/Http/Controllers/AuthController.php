@@ -84,6 +84,13 @@ class AuthController extends Controller
             ]);
         }
 
+        // kiểm tra status
+        if ($user->status == 0) {
+            return back()->withErrors([
+                'student_code' => "Tài khoản không hợp lệ"
+            ]);
+        }
+
         if (!Hash::check($password, $user->hashed_password)) {
             return back()->withErrors([
                 'password' => 'Mật khẩu không chính xác'

@@ -1,10 +1,10 @@
 <?php
 
-use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BorrowController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\NewsPostController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReservationController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [ClientController::class, 'index'])->name('client.index');
@@ -24,6 +24,11 @@ Route::get('/tin-tuc/{id}', [NewsPostController::class, 'show'])->name('news.sho
 
 // route cần đăng nhập
 Route::middleware(['check.login'])->group(function () {
+    // đặt trước sách
+    Route::post('/reservations/{bookId}', [ReservationController::class, 'store'])->name('reservations.store');
+    Route::get('/danh-sach-dat-truoc', [ReservationController::class, 'index'])->name('client.reservations.index');
+    Route::delete('/reservations/{id}/cancel', [ReservationController::class, 'destroy'])->name('reservations.destroy');
+
     // Sách yêu thích
     Route::post('/sach/{id}/yeu-thich', [ClientController::class, 'addToFavourite'])->name('client.books.favorite');
     Route::get('/sach-yeu-thich', [ClientController::class, 'favoriteBooks'])->name('client.books.favorites');

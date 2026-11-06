@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\NewsPostController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['check.login', 'role:admin'])->group(function () {
@@ -12,13 +13,14 @@ Route::middleware(['check.login', 'role:admin'])->group(function () {
     Route::resource('admin/categories', CategoryController::class);
     Route::resource('admin/books', BookController::class);
 
+    // Quản lý mượn / trả sách
     Route::prefix('admin/borrows')->name('admin.borrows.')->group(function () {
         Route::get('/', [AdminController::class, 'borrowIndex'])->name('index'); // Trỏ đến borrowIndex
         Route::get('/{id}', [AdminController::class, 'show'])->name('show');
         Route::post('/{id}/update-status', [AdminController::class, 'updateStatus'])->name('updateStatus');
     });
 
-    // làm logic để hệ thống tự kiểm tra và cập nhật nếu phiếu quá hạn và làm logic phạt tiền
+    // Quản lý bài viết tin tức
     Route::prefix('admin/tin-tuc')->name('admin.news.')->controller(NewsPostController::class)->group(function () {
         Route::get('/', 'index')->name('index');
         Route::get('/tao-moi', 'create')->name('create');
@@ -27,4 +29,8 @@ Route::middleware(['check.login', 'role:admin'])->group(function () {
         Route::put('/{id}', 'update')->name('update');
         Route::delete('/{id}', 'destroy')->name('destroy');
     });
+
+    // Quản lý tài khoản & độc giả
+    Route::patch('admin/users/{id}/toggle-status', [UserController::class, 'toggleStatus'])->name('admin.users.toggle-status');
+    Route::resource('admin/users', UserController::class)->names('admin.users');
 });

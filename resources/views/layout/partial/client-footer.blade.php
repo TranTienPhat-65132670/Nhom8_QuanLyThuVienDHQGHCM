@@ -5,7 +5,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-10">
 
             <!-- Cột 1: Thương hiệu -->
-            <div class="space-y-3 sm:col-span-2 lg:col-span-1">
+            <div class="space-y-3 sm:col-span-2 lg:col-span-2">
                 <div class="flex items-center gap-3">
                     <div class="w-10 h-10 rounded-xl bg-white p-1 shadow-md flex items-center justify-center shrink-0">
                         <img src="{{ asset('images/icon_web.png') }}" alt="Logo ĐHQG" class="w-full h-full object-contain">
@@ -19,25 +19,6 @@
                     Hệ thống phục vụ nhu cầu học tập, giảng dạy và nghiên cứu khoa học cho toàn thể cán bộ, giảng viên
                     và sinh viên ĐHQG-HCM.
                 </p>
-            </div>
-
-            <!-- Cột 2: Dịch vụ độc giả -->
-            <div>
-                <h4
-                    class="text-white font-bold text-xs mb-4 uppercase tracking-wider border-l-2 border-teal-500 pl-2.5">
-                    Dịch Vụ Độc Giả
-                </h4>
-                <ul class="space-y-2.5 text-xs font-medium">
-                    <li><a href="#" class="hover:text-teal-400 transition flex items-center gap-1.5"><i
-                                class="fa-solid fa-angle-right text-[10px] text-teal-500"></i> Tra cứu tài liệu</a>
-                    </li>
-                    <li><a href="#" class="hover:text-teal-400 transition flex items-center gap-1.5"><i
-                                class="fa-solid fa-angle-right text-[10px] text-teal-500"></i> Mượn trả tài liệu</a>
-                    </li>
-                    <li><a href="#" class="hover:text-teal-400 transition flex items-center gap-1.5"><i
-                                class="fa-solid fa-angle-right text-[10px] text-teal-500"></i> Xem thông tin mới</a>
-                    </li>
-                </ul>
             </div>
 
             <!-- Cột 3: Project Info -->

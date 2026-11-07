@@ -87,7 +87,7 @@
                                 <div
                                     class="w-10 h-14 bg-gray-200 rounded object-cover flex items-center justify-center text-xs text-gray-500 font-bold overflow-hidden">
                                     @if (!empty($book->book_image))
-                                        <img src="{{ asset('book/' . $book->book_image) }}" alt="{{ $book->book_name }}"
+                                        <img src="{{ asset($book->book_image) }}" alt="{{ $book->book_name }}"
                                             class="w-full h-full object-cover">
                                     @else
                                         Ảnh

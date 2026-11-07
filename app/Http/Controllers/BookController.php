@@ -143,6 +143,8 @@ class BookController extends Controller
     {
         $book = Book::findOrFail($id);
 
+        $oldAvailable = $book->available_quantity;
+
         // Tính số sách đang cho mượn
         $borrowedQuantity = $book->total_quantity - $book->available_quantity;
         $minAllowedQuantity = max(10, $borrowedQuantity);

@@ -36,7 +36,6 @@ class CategoryController extends Controller
 
         Category::create([
             'category_name' => $request->category_name,
-            'slug'          => Str::slug($request->category_name),
         ]);
 
         return redirect()->route('categories.index')->with('success', 'Thêm danh mục mới thành công!');
@@ -63,7 +62,6 @@ class CategoryController extends Controller
 
         $category->update([
             'category_name' => $request->category_name,
-            'slug'          => Str::slug($request->category_name),
         ]);
 
         return redirect()->route('categories.index')->with('success', 'Cập nhật danh mục thành công!');
